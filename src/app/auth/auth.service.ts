@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
@@ -7,7 +7,9 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class AuthService {
-  isLoggin: boolean = false;
+  //Đấy là 1 EventEmitter để bao lấy trạng thái đăng nhập của user, nếu user đăng nhập nó sẽ emit ra true
+  //đăng xuất sẽ emit ra fale, chúng ta dựa nó để thay đổi DOM tùy theo trạng thái đăng nhập của người dùng.
+  isLoggin = new EventEmitter<boolean>();
   token: string;
   loginUrl = `https://conduit.productionready.io/api/users/login`;
   signupUrl = `https://conduit.productionready.io/api/users`

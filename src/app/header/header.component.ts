@@ -7,11 +7,29 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  username: string ='';
-  constructor(public authService: AuthService) { }
+  username: string = '';
+  token: string;
+
+  constructor(public authService: AuthService) { 
+    
+  }
 
   ngOnInit() {
+    //gán token bằng token lưu trong localStorage
+    this.token = localStorage.getItem('token');
     this.username = localStorage.getItem('username')
+    //Tùy vào trạng thái đăng nhập để thay đổi token, qua đó thay đổi DOM hiển thị.
+    this.authService.isLoggin
+      .subscribe((status) => {
+        if (status == false) {
+          this.token = '' ;
+          
+        } else {
+          this.username = localStorage.getItem('username')
+          this.token = this.authService.token;
+        }
+      })
+    
   }
 
 }

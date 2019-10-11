@@ -42,7 +42,7 @@ export class SingupComponent implements OnInit {
             localStorage.setItem('username', this.userService.user.user.username);
             localStorage.setItem('token', this.authService.token);
             //Thay đổi trạng thái thành đã đăng nhập
-            this.authService.isLoggin = true;
+            this.authService.isLoggin.emit(true);
             //Đưa về trang chủ sau khi đã đăng nhập
             this.router.navigate(['/']);
             // console.log(user.user.email);

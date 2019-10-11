@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', this.authService.token);
         localStorage.setItem('username', this.userService.user.user.username);
         //Thay đổi trạng thái thành đã đăng nhập
-        this.authService.isLoggin = true;
+        this.authService.isLoggin.emit(true);
         this.invalidError = '';
         //Đưa về trang chủ sau khi đã đăng nhập
         this.router.navigate(['/']);

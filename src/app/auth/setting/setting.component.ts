@@ -67,7 +67,7 @@ export class SettingComponent implements OnInit {
     //thay đổi tình trạng đăng nhập, xóa token trong máy
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.authService.isLoggin = false;
+    this.authService.isLoggin.emit(false);
     this.authService.token = '';
     //Điều hướng về trang chủ
     this.router.navigate(['/']);

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Article } from '../models/article';
 import { Observable, Subject } from 'rxjs';
+import { Articles } from '../models/articles';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +81,26 @@ export class ArticleService {
 
   public removeFavoritedArticle(slug: string): Observable<Article> {
     return this.http.delete<Article>(`${this.url}/${slug}/favorite`, this.httpOptions)
+  }
+
+  //Lấy danh sách các article mà user đang đăng nhập đang follow
+  getFeedArticles(offset: number = 0): Observable<Articles> {
+    let params = {
+      'offset': offset.toString(),
+      'limit': '5'
+    }
+    this.httpOptions['params'] = params;
+    return this.http.get<Articles>(`https://conduit.productionready.io/api/articles/feed`, this.httpOptions)
+  }
+
+  //Lấy ra danh sách các article hiển thị ở trang chủ 
+  getArticles(offset: number = 0): Observable<Articles> {
+    return this.http.get<Articles>(`https://conduit.productionready.io/api/articles`, {
+      params: {
+        'limit': '5',
+        'offset': offset.toString()
+      }
+    })
   }
 
 }
