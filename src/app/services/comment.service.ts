@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Article } from '../models/article';
-// import { Co} from '../models/author';
+import { Comment } from '../models/comment';
+import { Comments } from '../models/comments';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,15 +20,16 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  getComment(slug: string): Observable<any> {
-	return this.http.get(`${this.url}/${slug}/comments`, this.httpOptions);
+  getComment(slug: string): Observable<Comments> {
+	  return this.http.get<Comments>(`${this.url}/${slug}/comments`, this.httpOptions);
   }
 
-  addComment(slug: string, data: object): Observable<any>{
-  	return this.http.post(`${this.url}/${slug}/comments`, data,  this.httpOptions);
+  addComment(slug: string, data: object): Observable<Comment>{
+  	return this.http.post<Comment>(`${this.url}/${slug}/comments`, data,  this.httpOptions);
   }
 
-  removeComment(slug: string, id: number): Observable<any>{
-  	return this.http.delete(`${this.url}/${slug}/comments/${id}`, this.httpOptions);
+  removeComment(slug: string, id: number): Observable<Comment>{
+  	return this.http.delete<Comment>(`${this.url}/${slug}/comments/${id}`, this.httpOptions);
   }
+  
 }

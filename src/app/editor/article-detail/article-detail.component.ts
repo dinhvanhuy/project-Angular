@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ArticleService} from '../../../services/article.service';
+import { ArticleService} from '../../services/article.service';
+import { Article } from 'src/app/models/article';
+
 
 @Component({
   selector: 'app-article-detail',
   templateUrl: './article-detail.component.html',
 })
 export class ArticleDetailComponent implements OnInit {
-	private idArticle:string;
+	public slug: string;
 	public markdown: string;
+  public isView: boolean  = false;
+  public article: Article;
   constructor(private articleService: ArticleService, 
   	private router: ActivatedRoute,
   	private route: Router
@@ -17,33 +21,42 @@ export class ArticleDetailComponent implements OnInit {
 
   ngOnInit() {
   	this.router.params.subscribe((params: any) => {
-  		this.idArticle =  params.slug;
+  		this.slug =  params.slug;
   	});
 
-  	this.getDetailArticle(this.idArticle);
-
-
+  	this.getDetailArticle(this.slug);
   }
 
   removeArticle() {
   	this.router.params.subscribe((params: any) => {
   		this.articleService.removeArticle(params.slug)
-  		.subscribe((data) => {
+  		.subscribe(() => {
   			this.route.navigate(['/editor']);
   		}) 
 
   	})
   }
 
-  getDetailArticle(idArticle: string) {
-  	this.articleService.getArticle(this.idArticle).subscribe(({article}) => {
-  		this.markdown = article.body;
+  getDetailArticle(slug: string) {
+  	this.articleService.getArticle(slug).subscribe((article: Article) => {
+  		this.markdown = article.article.body;
+      this.article = article;
+      if(article.article.author.username != 'huy1994321') {
+        this.isView =  true;
+      }
   	})
   }
 
   editArticle() {
-  	console.log(this.idArticle);
-  	this.route.navigate(['/editor', this.idArticle]);
+  	this.route.navigate(['/editor', this.slug]);
+  }
+
+  updateFavoriteArticle() {
+
+  }
+
+  updateFollow() {
+
   }
 
 }

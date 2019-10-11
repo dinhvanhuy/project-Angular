@@ -1,0 +1,10 @@
+<nav>
+	<ul class="pagination">
+		<li class="active page-item" *ngFor="let totalPage of totalPages; let i = index"
+		(click)="getIndexPage(i)"
+		[ngClass]="{active:pageNumber==i}"
+		>
+			<a class="page-link">{{totalPage}}</a>
+		</li>
+	</ul>
+</nav>

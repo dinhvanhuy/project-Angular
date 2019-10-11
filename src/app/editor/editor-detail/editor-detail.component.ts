@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ArticleService } from '../../../services/article.service';
-import { Article } from '../../../models/article';
+import { ArticleService } from '../../services/article.service';
+import { Article } from '../../models/article';
+import { Comment } from '../../models/comment';
 
 @Component({
   selector: 'app-editor',
@@ -12,7 +13,8 @@ import { Article } from '../../../models/article';
 export class EditorComponent implements OnInit {
   public articleForm: FormGroup;
   public article = []; 
-  public isEdit: bollean = false;
+  public isEdit: boolean  = false;
+  public idArticle: string;
   constructor(private articleService: ArticleService, 
     private formBuilder: FormBuilder,
     private route: Router,
@@ -55,7 +57,4 @@ export class EditorComponent implements OnInit {
     }); 
     }
   }
-
-
-
 }
