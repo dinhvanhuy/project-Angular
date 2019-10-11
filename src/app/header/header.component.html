@@ -11,7 +11,7 @@
         <a
           class="nav-link" 
           [routerLink]="['/']"          
-          routerLinkActive='active'
+          routerLinkActive="active"
           routerLinkActiveOption="{exact: true}">
           Home
         </a>
@@ -20,7 +20,9 @@
       <li 
         *ngIf="authService.isLoggin"
         class="nav-item">
-        <a class="nav-link">
+        <a 
+          class="nav-link"
+          [routerLink]="['/editor']">
           <i class="ion-compose"></i>
           &nbsp;New Post
         </a>
@@ -62,7 +64,7 @@
         *ngIf="authService.isLoggin" 
         class="nav-item">
         <a class="nav-link"
-          [routerLink]="['/']"
+          [routerLink]="['/profile', 'huy1994321']"
           [routerLinkActive]="'active'">
           {{ username }}
         </a>

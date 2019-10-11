@@ -10,14 +10,14 @@ const routes: Routes = [
     component: EditorComponent,
   },
   {
-  	path: '',
+    path: '',
     component: EditorComponent,
   },
   {
     path: 'article/:slug',
     component: ArticleDetailComponent,
   }
-  ];
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

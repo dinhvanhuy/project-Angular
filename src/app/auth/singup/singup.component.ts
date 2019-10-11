@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { ErrorSignup } from 'src/app/model/httpErrorResponse';
+import { ErrorSignup } from '../../models/httpErrorResponse';
 import { Router } from '@angular/router';
-import { User } from 'src/app/model/user';
-import { UserService } from 'src/app/service/user.service';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-singup',

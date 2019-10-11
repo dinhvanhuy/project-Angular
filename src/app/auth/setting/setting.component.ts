@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { UserService } from 'src/app/service/user.service';
-import { User } from 'src/app/model/user';
-import { ErrorSignup } from 'src/app/model/httpErrorResponse';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user';
+import { ErrorSignup } from 'src/app/models/httpErrorResponse';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
