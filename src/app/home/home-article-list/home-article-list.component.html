@@ -1,7 +1,10 @@
 <div class="feed-toggle">
   <ul class="nav nav-pills outline-active">
     <li *ngIf="token" class="nav-item">
-      <a [ngClass]="{ active: onFeed == true }" class="nav-link">
+      <a
+        (click)="onClickFeed()" 
+        [ngClass]="{ active: onFeed == true }" 
+        class="nav-link">
         Your Feed
       </a>
     </li>
@@ -9,8 +12,7 @@
       <a
         [ngClass]="{ active: onGlobal == true }"
         (click)="onClickGlobal()"
-        class="nav-link"
-      >
+        class="nav-link">
         Global Feed
       </a>
     </li>
@@ -20,9 +22,9 @@
 <div *ngIf="articles">
   <div *ngFor="let artical of articles" class="article-preview">
     <div class="article-meta">
-      <a href="#"><img src="{{ artical?.article.author.image }}"/></a>
+      <a href="#"><img src="{{ artical.article['author'].image }}"/></a>
       <div class="info">
-        <a href="#" class="author">{{ artical?.article.author.username }}</a>
+        <a href="#" class="author">{{ artical?.article['author'].username }}</a>
         <span class="date">{{ artical?.article.createdAt }}</span>
       </div>
       <button class="btn btn-outline-primary btn-sm pull-xs-right">

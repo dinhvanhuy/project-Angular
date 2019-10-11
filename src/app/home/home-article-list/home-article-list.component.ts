@@ -43,9 +43,10 @@ export class HomeArticleListComponent implements OnInit {
     this.onFeed = false;
     this.onGlobal = true;
     this.articleService.getArticles()
-      .subscribe((articals: Articles) => {
-        this.articles = articals.articles;
-        console.log(this.articles);
+      .subscribe((articles: Articles) => {
+        this.articles = articles.articles;
+        // console.log(this.articles);
+        console.log(articles.articles);
       })
   }
 
@@ -53,9 +54,10 @@ export class HomeArticleListComponent implements OnInit {
     this.onFeed = true;
     this.onGlobal = false;
     this.articleService.getFeedArticles()
-      .subscribe((articals: Articles) => {
-        this.articles = articals.articles;
-        console.log(this.articles);
+      .subscribe((articles: Articles) => {
+        this.articles = articles.articles;
+        // console.log(this.articles);
+        console.log(articles.articles);
       })
   }
 
