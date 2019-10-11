@@ -1,0 +1,54 @@
+<div class="auth-page">
+  <div class="container page">
+    <div class="row">
+
+      <div class="col-md-6 offset-md-3 col-xs-12">
+        <h1 class="text-xs-center">Sign in</h1>
+        <p class="text-xs-center">
+          <a href="">Need an account?</a>
+        </p>
+
+        <ul class="error-messages">
+          <li *ngIf="invalidError">
+            {{ invalidError }}
+          </li>
+          <li 
+            *ngIf="signinForm.controls['email'].errors && signinForm.controls['email'].errors['required'] && signinForm.controls['email'].touched">
+            Email cannot be empty
+          </li>
+          <li 
+            *ngIf="signinForm.controls['email'].errors && !signinForm.controls['email'].errors['required'] && !signinForm.controls['email'].errors['email'] && signinForm.controls['email'].touched">
+            Please enter valid email
+          </li>
+          <li *ngIf="signinForm.controls['password'].errors && signinForm.controls['password'].errors['required'] && signinForm.controls['password'].touched">
+            Password field cannot be empty
+          </li>
+        </ul>
+
+        <form [formGroup]="signinForm">
+          <fieldset class="form-group">
+            <input 
+              class="form-control form-control-lg" 
+              type="text" 
+              placeholder="Email"
+              formControlName="email">
+          </fieldset>
+          <fieldset class="form-group">
+            <input 
+              class="form-control form-control-lg" 
+              type="password" 
+              placeholder="Password"
+              formControlName="password">
+          </fieldset>
+          <button
+            [disabled]="!signinForm.valid"
+            (click)="onSubmit()" 
+            class="btn btn-lg btn-primary pull-xs-right">
+            Sign in
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

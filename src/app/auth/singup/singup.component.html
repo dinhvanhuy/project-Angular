@@ -1,0 +1,94 @@
+<div class="auth-page">
+    <div class="container page">
+      <div class="row">
+  
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">Sign up</h1>
+          <p class="text-xs-center">
+            <a
+              [routerLink]="['/login']">
+              Have an account?
+            </a>
+          </p>
+          <!-- Hiển thị những lỗi check trên server -->
+          <ul class="error-messages">
+            <li 
+              *ngFor="let error of errorList">
+              {{ error }}
+            </li>
+          </ul>
+          <!-- Hiển thị những lỗi check bằng validator của reactive form -->
+          <!-- Lỗi username -->
+          <ul 
+            *ngIf="signupForm.controls['name'].errors &&
+                    signupForm.controls['name'].errors['required'] &&
+                    signupForm.controls['name'].touched"
+            class="error-messages">
+            <li>
+              username can't be blank
+            </li>
+          </ul>
+          <!-- Lỗi email -->
+          <!-- Email bỏ trống -->
+          <ul 
+            *ngIf="signupForm.controls['email'].errors &&
+                    signupForm.controls['email'].errors['required'] &&
+                    signupForm.controls['email'].touched"
+            class="error-messages">
+            <li>
+              Email can't be blank
+            </li>
+          </ul>
+          <!-- Email nhập vào bị sai -->
+          <ul 
+            *ngIf="signupForm.controls['email'].errors &&
+                    signupForm.controls['email'].errors['email'] &&
+                    signupForm.controls['email'].touched"
+            class="error-messages">
+            <li>
+              Email can't be blank
+            </li>
+          </ul>
+          <!-- Lỗi password bỏ trống -->
+          <ul 
+            *ngIf="signupForm.controls['password'].errors &&
+                    signupForm.controls['password'].errors['required'] &&
+                    signupForm.controls['password'].touched"
+            class="error-messages">
+            <li>
+              Password can't be blank
+            </li>
+          </ul>
+          <form [formGroup]="signupForm">
+            <fieldset class="form-group">
+              <input 
+                class="form-control form-control-lg" 
+                type="text" 
+                placeholder="Your Name"
+                formControlName="name">
+            </fieldset>
+            <fieldset class="form-group">
+              <input 
+                class="form-control form-control-lg" 
+                type="text" 
+                placeholder="Email"
+                formControlName="email">
+            </fieldset>
+            <fieldset class="form-group">
+              <input 
+                class="form-control form-control-lg" 
+                type="password" 
+                placeholder="Password"
+                formControlName="password">
+            </fieldset>
+            <button 
+              class="btn btn-lg btn-primary pull-xs-right"
+              (click)="onSubmit()">
+              Sign up
+            </button>
+          </form>
+        </div>
+  
+      </div>
+    </div>
+  </div>

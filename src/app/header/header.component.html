@@ -1,0 +1,72 @@
+<nav class="navbar navbar-light">
+  <div class="container">
+    <a 
+      class="navbar-brand"
+      [routerLink]="['/']">
+      conduit
+    </a>
+    <ul class="nav navbar-nav pull-xs-right">
+      <li class="nav-item">
+        <!-- Add "active" class when you're on that page" -->
+        <a
+          class="nav-link" 
+          [routerLink]="['/']"          
+          routerLinkActive='active'
+          routerLinkActiveOption="{exact: true}">
+          Home
+        </a>
+      </li>
+      <!-- chỉ hiển thị link tạo bài viết mới khi người dùng đăng nhập -->
+      <li 
+        *ngIf="authService.isLoggin"
+        class="nav-item">
+        <a class="nav-link">
+          <i class="ion-compose"></i>
+          &nbsp;New Post
+        </a>
+      </li>
+      <!-- hiển thị setting khi người dùng đã đăng nhập -->
+      <li
+        *ngIf="authService.isLoggin" 
+        class="nav-item">
+        <a 
+          class="nav-link"
+          [routerLink]="['/settings']"
+          [routerLinkActive]="'active'">
+          <i class="ion-gear-a"></i>&nbsp;Settings
+        </a>
+      </li>
+      <!-- Chỉ hiển thị login nếu người dùng chưa đăng nhập -->
+      <li 
+        *ngIf="!authService.isLoggin"
+        class="nav-item">
+        <a 
+          class="nav-link"
+          [routerLink]="['/login']"
+          [routerLinkActive]="'active'">
+          Sign in
+        </a>
+      </li>
+      <!-- Chỉ hiển thị sign up nếu người dùng chưa đăng nhập -->
+      <li
+        *ngIf="!authService.isLoggin" 
+        class="nav-item">
+        <a class="nav-link"
+          [routerLink]="['/register']"
+          [routerLinkActive]="'active'">
+          Sign up
+        </a>
+      </li>
+      <!-- Chỉ hiển thị tên user đang login nếu người dùng đã đăng nhập -->
+      <li
+        *ngIf="authService.isLoggin" 
+        class="nav-item">
+        <a class="nav-link"
+          [routerLink]="['/']"
+          [routerLinkActive]="'active'">
+          {{ username }}
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
