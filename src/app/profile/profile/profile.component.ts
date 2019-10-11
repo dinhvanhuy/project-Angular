@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticleService } from '../../services/article.service';
+import { UserService } from '../../services/user.service';
+import { Profile }  from '../../models/profile';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-profile',
@@ -10,13 +14,24 @@ export class ProfileComponent implements OnInit {
   public articlesCount: number;
   public currentPage: number;
   public isView: boolean = false;
-  public username = 'huy1994321';
-  constructor(private articleService: ArticleService) { }
+  public username: string;
+  public profile: Profile; 
+  constructor(private articleService: ArticleService,
+    private userService: UserService,
+    private router: ActivatedRoute,
+    private route: Router,
+    ) { }
 
   ngOnInit() {
-    if(this.username == 'huy1994321') {
-      this.isView =  true;
-    }
+    this.router.params.subscribe(({userName}) => {
+      if(userName === localStorage.getItem('username')) {
+        this.isView =  true;
+        this.userService.getUserDetail(userName)
+          .subscribe((profile: Profile) => {
+            this.profile =  profile;
+          });
+      }
+    })
   }
 
   updateFollow() {
@@ -24,7 +39,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getSetting() {
-    
+    this.route.navigate(['/settings']);
   }
 
   getArticlesCount(articlesCount: number) {

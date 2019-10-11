@@ -9,14 +9,12 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ArticleService {
   public url = 'https://conduit.productionready.io/api/articles';
-  public token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzAzMTQsInVzZXJuYW1lIjoiMTExMTIyMjIyIiwiZXhwIjoxNTc1Njk5NjI1fQ.7UE50VF-4YLFNCpAKgfFZutfM4HOJ22Q73-EssP7D8E'
   public httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Token ' + this.token
-      }),
-      
-    }
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    })
+  }
   private subject = new Subject<any>();
 
   constructor(private http: HttpClient) {
@@ -68,7 +66,7 @@ export class ArticleService {
     return this.subject.asObservable();
   }
 
-   public sendIndexPage(numberPage: number) {
+  public sendIndexPage(numberPage: number) {
     this.subject.next({ numberPage: numberPage });
   }
 
@@ -83,6 +81,5 @@ export class ArticleService {
   public removeFavoritedArticle(slug: string): Observable<Article> {
     return this.http.delete<Article>(`${this.url}/${slug}/favorite`, this.httpOptions)
   }
-
 
 }

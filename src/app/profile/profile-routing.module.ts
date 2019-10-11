@@ -6,11 +6,11 @@ import { ListArticleComponent } from './list-article/list-article.component';
 
 const routes: Routes = [
 	{
-		path:'huy1994321',
+		path:':userName',
 		component: ProfileComponent,
 	},
 	{
-		path: 'huy1994321/favorites',
+		path: ':userName/favorites',
 		component: ProfileComponent
 	}
 ];

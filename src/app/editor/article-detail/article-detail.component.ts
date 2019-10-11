@@ -16,7 +16,7 @@ export class ArticleDetailComponent implements OnInit {
   public article: Article;
   constructor(private articleService: ArticleService, 
   	private router: ActivatedRoute,
-  	private route: Router
+  	private route: Router,
   	) { }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class ArticleDetailComponent implements OnInit {
   	this.articleService.getArticle(slug).subscribe((article: Article) => {
   		this.markdown = article.article.body;
       this.article = article;
-      if(article.article.author.username != 'huy1994321') {
+      if(article.article.author.username === localStorage.getItem('item')) {
         this.isView =  true;
       }
   	})

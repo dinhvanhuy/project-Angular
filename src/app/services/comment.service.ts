@@ -4,21 +4,22 @@ import { HttpHeaders } from '@angular/common/http';
 import { Comment } from '../models/comment';
 import { Comments } from '../models/comments';
 import { Observable } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
   public url = 'https://conduit.productionready.io/api/articles';
-  public token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NzAzMTQsInVzZXJuYW1lIjoiMTExMTIyMjIyIiwiZXhwIjoxNTc1Njk5NjI1fQ.7UE50VF-4YLFNCpAKgfFZutfM4HOJ22Q73-EssP7D8E';
   public httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
-        'Authorization': 'Token ' + this.token
+        'Authorization': `Token ${localStorage.getItem('token')}`
       })
     }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) {
+   }
 
   getComment(slug: string): Observable<Comments> {
 	  return this.http.get<Comments>(`${this.url}/${slug}/comments`, this.httpOptions);
