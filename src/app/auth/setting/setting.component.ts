@@ -38,6 +38,7 @@ export class SettingComponent implements OnInit {
                                   this.settingForm.controls['password'].value)
       .subscribe((user: User) => {
         this.userService.user = user;
+        this,this.router.navigate(['/']);
       }, (error: ErrorSignup) => {
         this.errorList = [];
         //Lưu lại danh sách các error trả về
