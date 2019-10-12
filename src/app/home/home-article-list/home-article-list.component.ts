@@ -98,4 +98,8 @@ export class HomeArticleListComponent implements OnInit {
       })
   }
 
+  onClickPage() {
+    
+  }
+
 }

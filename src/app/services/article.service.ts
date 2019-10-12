@@ -41,7 +41,7 @@ export class ArticleService {
   public getArticleAuthor(author: string, offset = 0) {
     let params = {
       author:author,
-      limit: 5,
+      limit: 10,
       offset: offset,
     };
     this.httpOptions['params'] = params;
@@ -52,7 +52,7 @@ export class ArticleService {
   public getArticleFavorited(author: string, offset = 0) {
     let params =  {
       favorited:author,
-      limit: 5,
+      limit: 10,
       offset: offset,
     };
     this.httpOptions['params'] = params;
@@ -92,7 +92,7 @@ export class ArticleService {
     })
     let params = {
       'offset': offset.toString(),
-      'limit': '5'
+      'limit': '10'
     }
     this.httpOptions['params'] = params;
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles/feed`, {
@@ -105,7 +105,7 @@ export class ArticleService {
   getArticles(offset: number = 0): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
       params: {
-        'limit': '5',
+        'limit': '10',
         'offset': offset.toString()
       }
     })
@@ -114,7 +114,7 @@ export class ArticleService {
   getArticlesByTag(offset: number = 0, tag: string): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
       params: {
-        'limit': '5',
+        'limit': '10',
         'offset': offset.toString(),
         'tag': tag
       }
