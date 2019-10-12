@@ -37,9 +37,13 @@
     </a>
     <div class="info">
       <a href="#" class="author">{{ article.author.username }}</a>
-      <span class="date">{{ article.createdAt }}</span>
+      <span class="date">{{ article.createdAt | customDate }}</span>
     </div>
-    <button class="btn btn-outline-primary btn-sm pull-xs-right">
+    <button       
+      class="btn btn-sm pull-xs-right"
+      appToogleLike
+      [ngClass]="{'btn-outline-primary': article.favorited == false, 'btn-primary': article.favorited == true}"
+      (click)="toogleLike()">
       <i class="ion-heart"></i> {{ article.favoritesCount }}
     </button>
   </div>

@@ -104,6 +104,10 @@ export class ArticleService {
   //Lấy ra danh sách các article hiển thị ở trang chủ 
   getArticles(offset: number = 0): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      },
       params: {
         'limit': '10',
         'offset': offset.toString()
@@ -113,6 +117,10 @@ export class ArticleService {
 
   getArticlesByTag(offset: number = 0, tag: string): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      },
       params: {
         'limit': '10',
         'offset': offset.toString(),

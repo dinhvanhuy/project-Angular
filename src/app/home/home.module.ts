@@ -6,13 +6,14 @@ import { HomeComponent } from './home/home.component';
 import { HomeArticleListComponent } from './home-article-list/home-article-list.component';
 // import { HomePaginationComponent } from './home-pagination/home-pagination.component';
 import { HomeTagListComponent } from './home-tag-list/home-tag-list.component';
-
+import { CustomDatePipe } from "../custom-date.pipe";
 
 @NgModule({
-  declarations: [HomeComponent, HomeArticleListComponent, HomeTagListComponent],
+  declarations: [HomeComponent, HomeArticleListComponent, HomeTagListComponent, CustomDatePipe],
   imports: [
     CommonModule,
     HomeRoutingModule
+   
   ]
 })
 export class HomeModule { }

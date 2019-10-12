@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { Article } from 'src/app/models/article';
 import { ArticlesList } from 'src/app/models/articlesList';
 import { TagService } from 'src/app/services/tag.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-article-list',
@@ -35,7 +36,8 @@ export class HomeArticleListComponent implements OnInit {
 
   constructor(private articleService: ArticleService,
     private authService: AuthService,
-    private tagService: TagService) { }
+    private tagService: TagService,
+    private route: Router) { }
 
   ngOnInit() {
     //Hiển thị list article khi người dùng vào trang home, tùy thuộc vào trạng thái đăng nhập.
@@ -127,6 +129,15 @@ export class HomeArticleListComponent implements OnInit {
           this.articlesNumberReturn = articles.articlesCount;
           this.generatePageArray(this.articlesNumberReturn);
         })
+    }
+  }
+
+  //Like/Unlike 1 article
+  toogleLike() {
+    if (this.token = '') {
+      this.route.navigate(['/login'])
+    } else {
+      
     }
   }
 
