@@ -45,8 +45,7 @@ export class HomeArticleListComponent implements OnInit {
     this.articleService.getArticles()
       .subscribe((articles: Articles) => {
         this.articles = articles.articles;
-        // console.log(this.articles);
-        console.log(articles.articles);
+        // console.log(this.articles[0].author.username);
       })
   }
 
@@ -57,7 +56,6 @@ export class HomeArticleListComponent implements OnInit {
       .subscribe((articles: Articles) => {
         this.articles = articles.articles;
         // console.log(this.articles);
-        console.log(articles.articles);
       })
   }
 

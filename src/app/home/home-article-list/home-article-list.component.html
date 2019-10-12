@@ -20,20 +20,20 @@
 </div>
 
 <div *ngIf="articles">
-  <div *ngFor="let artical of articles" class="article-preview">
+  <div *ngFor="let article of articles" class="article-preview">
     <div class="article-meta">
-      <a href="#"><img src="{{ artical.article['author'].image }}"/></a>
+      <a href="#"><img src="{{ article.author.image }}"/></a>
       <div class="info">
-        <a href="#" class="author">{{ artical?.article['author'].username }}</a>
-        <span class="date">{{ artical?.article.createdAt }}</span>
+        <a href="#" class="author">{{ article.author.username }}</a>
+        <span class="date">{{ article.createdAt }}</span>
       </div>
       <button class="btn btn-outline-primary btn-sm pull-xs-right">
-        <i class="ion-heart"></i> {{ artical?.article.favoritesCount }}
+        <i class="ion-heart"></i> {{ article.favoritesCount }}
       </button>
     </div>
     <a href="" class="preview-link">
-      <h1>{{ artical?.article.title }}</h1>
-      <p>{{ artical?.article.body }}</p>
+      <h1>{{ article.title }}</h1>
+      <p>{{ article.body }}</p>
       <span>Read more...</span>
     </a>
   </div>
