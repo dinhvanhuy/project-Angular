@@ -21,10 +21,21 @@ export class HomeArticleListComponent implements OnInit {
   articles;
   tag: string;
   articlesNumberReturn: number;
+  pageArray: number[];
+  currentPage: number = 1;
 
-  constructor(private articleService: ArticleService, 
-              private authService: AuthService,
-              private tagService: TagService) { }
+  //Khởi tạo page array để render ra HTML
+  generatePageArray(articleAmount: number) {
+    this.pageArray = [];
+    let page = Math.ceil(articleAmount / 10);
+    for (let i = 1; i <= page; i++) {
+      this.pageArray.push(i);
+    }
+  }
+
+  constructor(private articleService: ArticleService,
+    private authService: AuthService,
+    private tagService: TagService) { }
 
   ngOnInit() {
     //Hiển thị list article khi người dùng vào trang home, tùy thuộc vào trạng thái đăng nhập.
@@ -68,38 +79,55 @@ export class HomeArticleListComponent implements OnInit {
           .subscribe((articles: ArticlesList) => {
             this.articles = articles.articles;
             this.articlesNumberReturn = articles.articlesCount;
+            this.generatePageArray(this.articlesNumberReturn);
           })
       })
   }
 
-  onClickGlobal() {
+  onClickGlobal(offset: number = 0) {
     this.onFeed = false;
     this.onGlobal = true;
     this.onTag = false;
-    this.articleService.getArticles()
+    this.articleService.getArticles(offset)
       .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
         // console.log(articles);
+        this.generatePageArray(this.articlesNumberReturn);
       })
   }
 
-  onClickFeed() {
+  onClickFeed(offset: number = 0) {
     this.onFeed = true;
     this.onGlobal = false;
     this.onTag = false;
-    this.articleService.getFeedArticles()
+    this.articleService.getFeedArticles(offset)
       .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
         // console.log(this.articles)
+        this.generatePageArray(this.articlesNumberReturn);
       }, () => {
         console.log("You have to login first")
       })
   }
 
-  onClickPage() {
-    
+  onClickPage(page: number) {
+    this.currentPage = page;
+    if (this.onFeed) {
+      this.onClickFeed((page - 1) * 10)
+    }
+    if (this.onGlobal) {
+      this.onClickGlobal((page - 1) * 10)
+    }
+    if (this.onTag) {
+      this.articleService.getArticlesByTag((page - 1) * 10, this.tag)
+        .subscribe((articles: ArticlesList) => {
+          this.articles = articles.articles;
+          this.articlesNumberReturn = articles.articlesCount;
+          this.generatePageArray(this.articlesNumberReturn);
+        })
+    }
   }
 
 }

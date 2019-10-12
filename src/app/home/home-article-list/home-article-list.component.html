@@ -48,15 +48,28 @@
     <p>{{ article.body }}</p>
     <span>Read more...</span>
   </a>
+  <ul
+    style="float: right"
+    class="tag-list">
+    <li
+      *ngFor="let tag of article.tagList"
+      class="tag-default tag-pill tag-outline ng-binding ng-scope">
+      {{ tag }}
+    </li>
+
+  </ul>
 </div>
 <!-- Phân trang -->
 <nav>
   <ul class="pagination">
     <li
-      class="page-item ng-scope">
+      *ngFor="let page of pageArray"
+      class="page-item ng-scope"
+      [ngClass]="{'active': page==currentPage}">
         <a 
-          class="page-link ng-binding">
-          1
+          class="page-link ng-binding"
+          (click)="onClickPage(page)">
+          {{ page }}
         </a>      
     </li>
   </ul>
