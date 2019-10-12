@@ -39,8 +39,12 @@ export class SingupComponent implements OnInit {
             this.userService.user = user; 
             //Gán token vào localStorage
             this.authService.token = user.user.token;
-            localStorage.setItem('username', this.userService.user.user.username);
             localStorage.setItem('token', this.authService.token);
+            localStorage.setItem('bio', user.user.bio);
+            localStorage.setItem('email', user.user.email);
+            localStorage.setItem('password', user.user.password);
+            localStorage.setItem('username', this.userService.user.user.username);
+            localStorage.setItem('image', this.userService.user.user.image);
             //Thay đổi trạng thái thành đã đăng nhập
             this.authService.isLoggin.emit(true);
             //Đưa về trang chủ sau khi đã đăng nhập

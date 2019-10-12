@@ -21,11 +21,11 @@ export class SettingComponent implements OnInit {
 
   ngOnInit() {
     this.settingForm = new FormGroup({
-      'pictureUrl': new FormControl(this.userService.user.user.image),
-      'name': new FormControl(this.userService.user.user.username),
-      'bio': new FormControl(this.userService.user.user.bio),
-      'email': new FormControl(this.userService.user.user.email),
-      'password': new FormControl(this.userService.user.user.password)
+      'pictureUrl': new FormControl(localStorage.getItem('image')),
+      'name': new FormControl(localStorage.getItem('username')),
+      'bio': new FormControl(localStorage.getItem('bio')),
+      'email': new FormControl(localStorage.getItem('email')),
+      'password': new FormControl(localStorage.getItem('password'))
     })
   }
 
@@ -38,6 +38,11 @@ export class SettingComponent implements OnInit {
                                   this.settingForm.controls['password'].value)
       .subscribe((user: User) => {
         this.userService.user = user;
+        localStorage.setItem('bio', user.user.bio);
+        localStorage.setItem('email', user.user.email);
+        localStorage.setItem('password', user.user.password);
+        localStorage.setItem('username', this.userService.user.user.username);
+        localStorage.setItem('image', this.userService.user.user.image);
         this,this.router.navigate(['/']);
       }, (error: ErrorSignup) => {
         this.errorList = [];
