@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from 'src/app/services/article.service';
 import { Articles } from 'src/app/models/articles';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Article } from 'src/app/models/article';
+import { ArticlesList } from 'src/app/models/articlesList';
+import { TagService } from 'src/app/services/tag.service';
 
 @Component({
   selector: 'app-home-article-list',
@@ -12,50 +14,87 @@ import { Article } from 'src/app/models/article';
 })
 export class HomeArticleListComponent implements OnInit {
   //Các biến boolean check xem nav nào đang được chọn
-  onFeed: boolean = true;
-  onGlobal: boolean = false;
-  onTag: boolean = true;
+  onFeed: boolean;
+  onGlobal: boolean;
+  onTag: boolean;
   token: string;
-  articles: Article[]
+  articles;
+  tag: string;
+  articlesNumberReturn: number;
 
-  constructor(private httpClient: HttpClient, private articleService: ArticleService, private authService: AuthService) { }
+  constructor(private articleService: ArticleService, 
+              private authService: AuthService,
+              private tagService: TagService) { }
 
   ngOnInit() {
+    //Hiển thị list article khi người dùng vào trang home, tùy thuộc vào trạng thái đăng nhập.
+    //Nếu đã đăng nhập sẽ hiển thị new feed, chưa đăng nhập sẽ hiển thị global feed
     this.authService.isLoggin
       .subscribe((status: boolean) => {
-        if (status == false) {
-          this.token = '';
-          this.onClickGlobal()
-        } else {
-          this.token = this.authService.token;
+        if (status) {
           this.onClickFeed()
+          this.onGlobal = false;
+          this.onFeed = true;
+          this.token = localStorage.getItem('token');
+        } else {
+          this.onFeed = false;
+          this.onGlobal = true
+          this.onClickFeed()
+          this.token = '';
         }
       })
-    this.token = localStorage.getItem('token');
-    if (this.token == '') {
+    if (localStorage.getItem('token') == null) {
       this.onClickGlobal()
+      this.onGlobal = true;
+      this.onFeed = false;
+      this.token = '';
     } else {
       this.onClickFeed()
+      this.onGlobal = false;
+      this.onFeed = true;
+      this.token = localStorage.getItem('token');
     }
+    //Lắng nghe sự kiện có người chọn tag để xem bài viết
+    this.tagService.onClickedTag
+      .subscribe((tag: string) => {
+        //Bỏ trạng thái đang active của các link global và feed
+        this.tag = tag;
+        this.onTag = true;
+        this.onFeed = false;
+        this.onGlobal = false;
+        // console.log(this.tag);
+        //Get các kết quả các list articles trả về tương ứng với tag 
+        this.articleService.getArticlesByTag(0, tag)
+          .subscribe((articles: ArticlesList) => {
+            this.articles = articles.articles;
+            this.articlesNumberReturn = articles.articlesCount;
+          })
+      })
   }
 
   onClickGlobal() {
     this.onFeed = false;
     this.onGlobal = true;
+    this.onTag = false;
     this.articleService.getArticles()
-      .subscribe((articles: Articles) => {
+      .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
-        // console.log(this.articles[0].author.username);
+        this.articlesNumberReturn = articles.articlesCount;
+        // console.log(articles);
       })
   }
 
   onClickFeed() {
     this.onFeed = true;
     this.onGlobal = false;
+    this.onTag = false;
     this.articleService.getFeedArticles()
-      .subscribe((articles: Articles) => {
+      .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
-        // console.log(this.articles);
+        this.articlesNumberReturn = articles.articlesCount;
+        // console.log(this.articles)
+      }, () => {
+        console.log("You have to login first")
       })
   }
 

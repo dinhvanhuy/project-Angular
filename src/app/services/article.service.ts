@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Article } from '../models/article';
 import { Observable, Subject } from 'rxjs';
 import { Articles } from '../models/articles';
+import { ArticlesList } from '../models/articlesList';
 
 @Injectable({
   providedIn: 'root'
@@ -84,21 +85,38 @@ export class ArticleService {
   }
 
   //Lấy danh sách các article mà user đang đăng nhập đang follow
-  getFeedArticles(offset: number = 0): Observable<Articles> {
+  getFeedArticles(offset: number = 0): Observable<ArticlesList> {
+    const httpHeader = new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    })
     let params = {
       'offset': offset.toString(),
       'limit': '5'
     }
     this.httpOptions['params'] = params;
-    return this.http.get<Articles>(`https://conduit.productionready.io/api/articles/feed`, this.httpOptions)
+    return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles/feed`, {
+      headers: httpHeader,
+      params: params
+    })
   }
 
   //Lấy ra danh sách các article hiển thị ở trang chủ 
-  getArticles(offset: number = 0): Observable<Articles> {
-    return this.http.get<Articles>(`https://conduit.productionready.io/api/articles`, {
+  getArticles(offset: number = 0): Observable<ArticlesList> {
+    return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
       params: {
         'limit': '5',
         'offset': offset.toString()
+      }
+    })
+  }
+
+  getArticlesByTag(offset: number = 0, tag: string): Observable<ArticlesList> {
+    return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
+      params: {
+        'limit': '5',
+        'offset': offset.toString(),
+        'tag': tag
       }
     })
   }

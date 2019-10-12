@@ -2,9 +2,10 @@
   <ul class="nav nav-pills outline-active">
     <li *ngIf="token" class="nav-item">
       <a
-        (click)="onClickFeed()" 
-        [ngClass]="{ active: onFeed == true }" 
-        class="nav-link">
+        (click)="onClickFeed()"
+        [ngClass]="{ active: onFeed == true }"
+        class="nav-link"
+      >
         Your Feed
       </a>
     </li>
@@ -16,25 +17,48 @@
         Global Feed
       </a>
     </li>
+    <li 
+      *ngIf="onTag" 
+      class="nav-item">
+      <a [ngClass]="{ active: onTag == true }" class="nav-link"> #{{ tag }} </a>
+    </li>
   </ul>
 </div>
-
-<div *ngIf="articles">
-  <div *ngFor="let article of articles" class="article-preview">
-    <div class="article-meta">
-      <a href="#"><img src="{{ article.author.image }}"/></a>
-      <div class="info">
-        <a href="#" class="author">{{ article.author.username }}</a>
-        <span class="date">{{ article.createdAt }}</span>
-      </div>
-      <button class="btn btn-outline-primary btn-sm pull-xs-right">
-        <i class="ion-heart"></i> {{ article.favoritesCount }}
-      </button>
-    </div>
-    <a href="" class="preview-link">
-      <h1>{{ article.title }}</h1>
-      <p>{{ article.body }}</p>
-      <span>Read more...</span>
+<!-- Hiển thị thông báo chưa có bài viết -->
+<p 
+  *ngIf="articlesNumberReturn == 0">
+  No articles are here... yet.
+</p>
+<!-- Articles list -->
+<div *ngFor="let article of articles" class="article-preview">
+  <div class="article-meta">
+    <a href="#">
+      <img src="{{ article.author.image }}" />
     </a>
+    <div class="info">
+      <a href="#" class="author">{{ article.author.username }}</a>
+      <span class="date">{{ article.createdAt }}</span>
+    </div>
+    <button class="btn btn-outline-primary btn-sm pull-xs-right">
+      <i class="ion-heart"></i> {{ article.favoritesCount }}
+    </button>
   </div>
+  <a href="" class="preview-link">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.body }}</p>
+    <span>Read more...</span>
+  </a>
 </div>
+<!-- Phân trang -->
+<nav>
+  <ul class="pagination">
+    <li
+      class="page-item ng-scope">
+        <a 
+          class="page-link ng-binding">
+          1
+        </a>      
+    </li>
+  </ul>
+</nav>
+

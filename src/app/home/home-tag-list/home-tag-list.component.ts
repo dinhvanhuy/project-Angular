@@ -20,5 +20,9 @@ export class HomeTagListComponent implements OnInit {
 
   ngOnInit() {
   }
+  
+  onClickTag(tag: string) {
+    this.tagService.onClickedTag.emit(tag);
+  }
 
 }

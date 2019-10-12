@@ -4,7 +4,8 @@
   <div class="tag-list">
     <a
       *ngFor="let tag of tags" 
-      class="tag-pill tag-default">
+      class="tag-pill tag-default"
+      (click)="onClickTag(tag)">
       {{ tag }}
     </a>
   </div>
