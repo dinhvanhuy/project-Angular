@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 import { ErrorSignup } from 'src/app/models/httpErrorResponse';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { ConfirmService } from 'src/app/services/confirm.service';
 
 @Component({
   selector: 'app-setting',
@@ -14,8 +15,10 @@ import { Router } from '@angular/router';
 export class SettingComponent implements OnInit {
   settingForm: FormGroup;
   errorList: string[];
+  onClickLogout: boolean = false; //Biến để xác định xem người dùng muốn chuyển sang route khác hay bấm logout
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { 
+  constructor(private userService: UserService, private authService: AuthService, private router: Router,
+    public confirmService: ConfirmService) { 
   
   }
 
@@ -70,10 +73,15 @@ export class SettingComponent implements OnInit {
 
   onLogout() {
     //thay đổi tình trạng đăng nhập, xóa token trong máy
+    this.onClickLogout = true;
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.authService.isLoggin.emit(false);
+    localStorage.removeItem('password');
+    localStorage.removeItem('image');
+    localStorage.removeItem('bio');
+    localStorage.removeItem('email');
     this.authService.token = '';
+    this.authService.isLoggin.emit(false);
     //Điều hướng về trang chủ
     this.router.navigate(['/']);
   }

@@ -30,13 +30,11 @@ export class LoginComponent implements OnInit {
       .subscribe((user: User) => {
         //Gán user đang đăng nhập vào user trong UserService
         this.userService.user = user; 
-        //Gán token vào localStorage
-        // console.log(user);
+        //Gán token và info của người dùng vào localStorage để hiển thị ở trang chủ và trang setting
         this.authService.token = user.user.token;
         localStorage.setItem('token', this.authService.token);
         localStorage.setItem('bio', user.user.bio);
         localStorage.setItem('email', user.user.email);
-        localStorage.setItem('password', user.user.password);
         localStorage.setItem('username', this.userService.user.user.username);
         localStorage.setItem('image', this.userService.user.user.image);
         //Thay đổi trạng thái thành đã đăng nhập
@@ -44,7 +42,6 @@ export class LoginComponent implements OnInit {
         this.invalidError = '';
         //Đưa về trang chủ sau khi đã đăng nhập
         this.router.navigate(['/']);
-        // console.log(user.user.email);
       }, () => {
         this.invalidError = "email or password is invalid";
       })

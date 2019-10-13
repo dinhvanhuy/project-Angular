@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent implements OnInit {
   username: string = '';
   token: string;
+  image: string;
 
   constructor(public authService: AuthService) { 
     
@@ -17,16 +18,17 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     //gán token bằng token lưu trong localStorage
     this.token = localStorage.getItem('token');
-    this.username = localStorage.getItem('username')
+    this.username = localStorage.getItem('username');
+    this.image = localStorage.getItem('image');
     //Tùy vào trạng thái đăng nhập để thay đổi token, qua đó thay đổi DOM hiển thị.
     this.authService.isLoggin
       .subscribe((status) => {
         if (status == false) {
-          this.token = '' ;
-          
+          this.token = '';
         } else {
           this.username = localStorage.getItem('username')
           this.token = this.authService.token;
+          this.image = localStorage.getItem('image');
         }
       })
     

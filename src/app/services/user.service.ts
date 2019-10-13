@@ -15,6 +15,7 @@ export class UserService {
   constructor(private httpClient: HttpClient) { }
 
   updateProFile(pictureUrl: string, username: string, bio: string, email: string, password: string): Observable<User> {
+    localStorage.setItem('password', password);
     const httpHeader = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`,
       'Accept': `application/json`,

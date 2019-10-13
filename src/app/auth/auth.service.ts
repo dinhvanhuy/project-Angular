@@ -13,11 +13,14 @@ export class AuthService {
   token: string;
   loginUrl = `https://conduit.productionready.io/api/users/login`;
   signupUrl = `https://conduit.productionready.io/api/users`
+  //Store link mà chúng ta sẽ điều hướng cho user sau khi login thành công
+  redirectUrl: string;
 
   constructor(private httpClient: HttpClient) { }
 
   login(email: string, password: string): Observable<User>  {
     // console.log(email, password);
+    localStorage.setItem('password', password);
     return this.httpClient.post<User>(this.loginUrl, {
       'user': {
         'email': email,
@@ -27,6 +30,7 @@ export class AuthService {
   }
 
   signup(name: string, email: string, password: string): Observable<User> {
+    localStorage.setItem('password', password);
     return this.httpClient.post<User>(this.signupUrl, {
       'user': {
         'username': name,
