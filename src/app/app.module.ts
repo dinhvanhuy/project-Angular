@@ -11,15 +11,14 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
-import { ToogleLikeDirective } from './toogle-like.directive';
+// import { ToogleLikeDirective } from './toogle-like.directive';
 // import { CustomDatePipe } from './custom-date.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent,
-    ToogleLikeDirective
+    FooterComponent
   ],
   imports: [
     BrowserModule,

@@ -76,8 +76,16 @@ export class ArticleService {
     return this.subject.asObservable();
   }
 
+  //Chỉnh sửa lại api like bài viết đang bị sai
   public addFavoritedArticle(slug: string): Observable<Article> {
-    return this.http.post<Article>(`${this.url}/${slug}/favorite`, this.httpOptions)
+    return this.http.post<Article>(`${this.url}/${slug}/favorite`, {
+      //Không truyền vào data được sửa, obj này phải rỗng
+    }, {
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Token ${localStorage.getItem('token')}`
+      }
+    })
   }
 
   public removeFavoritedArticle(slug: string): Observable<Article> {
@@ -104,10 +112,6 @@ export class ArticleService {
   //Lấy ra danh sách các article hiển thị ở trang chủ 
   getArticles(offset: number = 0): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
-      headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Token ${localStorage.getItem('token')}`
-      },
       params: {
         'limit': '10',
         'offset': offset.toString()
@@ -117,10 +121,6 @@ export class ArticleService {
 
   getArticlesByTag(offset: number = 0, tag: string): Observable<ArticlesList> {
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
-      headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Token ${localStorage.getItem('token')}`
-      },
       params: {
         'limit': '10',
         'offset': offset.toString(),

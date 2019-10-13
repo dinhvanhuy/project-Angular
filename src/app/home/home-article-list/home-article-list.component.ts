@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from 'src/app/services/article.service';
 import { Articles } from 'src/app/models/articles';
@@ -133,11 +133,34 @@ export class HomeArticleListComponent implements OnInit {
   }
 
   //Like/Unlike 1 article
-  toogleLike() {
-    if (this.token = '') {
+  toogleLike(heart: HTMLElement, {slug}) {
+    let token = localStorage.getItem('token');
+    if (token == '' || token == null) {
       this.route.navigate(['/login'])
     } else {
-      
+      //Thay đổi nút heart ở trang chủ
+      let classString = heart.className;
+      if (classString.indexOf('btn-outline-primary') >= 0){
+        //Nếu đang chưa like thì chuyển thành like
+        heart.classList.remove('btn-outline-primary');
+        heart.classList.add('btn-primary');
+        let num = Number(heart.innerText) + 1;        
+        heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
+        this.articleService.addFavoritedArticle(slug)
+          .subscribe((article) => {
+            console.log('Đã like')
+          })
+      } else {
+        //Và ngược lại
+        heart.classList.remove('btn-primary');
+        heart.classList.add('btn-outline-primary');
+        let num = Number(heart.innerText) - 1;
+        heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
+        this.articleService.removeFavoritedArticle(slug)
+          .subscribe((article) => {
+            console.log('Đã dislike')
+          })
+      }
     }
   }
 

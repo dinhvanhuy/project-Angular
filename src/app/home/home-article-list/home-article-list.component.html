@@ -40,10 +40,10 @@
       <span class="date">{{ article.createdAt | customDate }}</span>
     </div>
     <button       
+      #heart
       class="btn btn-sm pull-xs-right"
-      appToogleLike
       [ngClass]="{'btn-outline-primary': article.favorited == false, 'btn-primary': article.favorited == true}"
-      (click)="toogleLike()">
+      (click)="toogleLike(heart, article)">
       <i class="ion-heart"></i> {{ article.favoritesCount }}
     </button>
   </div>

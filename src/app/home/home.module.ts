@@ -9,11 +9,16 @@ import { HomeTagListComponent } from './home-tag-list/home-tag-list.component';
 import { CustomDatePipe } from "../custom-date.pipe";
 
 @NgModule({
-  declarations: [HomeComponent, HomeArticleListComponent, HomeTagListComponent, CustomDatePipe],
+  declarations: [
+    HomeComponent, 
+    HomeArticleListComponent, 
+    HomeTagListComponent, 
+    CustomDatePipe
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule
-   
+
   ]
 })
 export class HomeModule { }

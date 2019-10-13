@@ -25,12 +25,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signinForm);
+    // console.log(this.signinForm);
     this.authService.login(this.signinForm.controls['email'].value, this.signinForm.controls['password'].value)
       .subscribe((user: User) => {
         //Gán user đang đăng nhập vào user trong UserService
         this.userService.user = user; 
         //Gán token vào localStorage
+        // console.log(user);
         this.authService.token = user.user.token;
         localStorage.setItem('token', this.authService.token);
         localStorage.setItem('bio', user.user.bio);
