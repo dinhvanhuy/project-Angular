@@ -94,7 +94,6 @@ export class HomeArticleListComponent implements OnInit {
       .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
-        // console.log(articles);
         this.generatePageArray(this.articlesNumberReturn);
       })
   }
@@ -107,7 +106,6 @@ export class HomeArticleListComponent implements OnInit {
       .subscribe((articles: ArticlesList) => {
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
-        // console.log(this.articles)
         this.generatePageArray(this.articlesNumberReturn);
       }, () => {
         console.log("You have to login first")
@@ -148,7 +146,6 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.addFavoritedArticle(slug)
           .subscribe((article) => {
-            console.log('Đã like')
           })
       } else {
         //Và ngược lại
@@ -158,7 +155,6 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.removeFavoritedArticle(slug)
           .subscribe((article) => {
-            console.log('Đã dislike')
           })
       }
     }
