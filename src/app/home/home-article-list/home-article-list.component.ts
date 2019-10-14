@@ -52,7 +52,7 @@ export class HomeArticleListComponent implements OnInit {
         } else {
           this.onFeed = false;
           this.onGlobal = true
-          this.onClickFeed()
+          this.onClickGlobal()
           this.token = '';
         }
       })
@@ -146,6 +146,8 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.addFavoritedArticle(slug)
           .subscribe((article) => {
+            console.log('Đã like');
+            
           })
       } else {
         //Và ngược lại
@@ -155,9 +157,14 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.removeFavoritedArticle(slug)
           .subscribe((article) => {
+            console.log('Đã dislike');
           })
       }
     }
+  }
+
+  onClickTag(tag: string) {
+    this.tagService.onClickedTag.emit(tag);
   }
 
 }

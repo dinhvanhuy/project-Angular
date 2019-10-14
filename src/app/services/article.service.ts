@@ -113,10 +113,23 @@ export class ArticleService {
 
   //Lấy ra danh sách các article hiển thị ở trang chủ 
   getArticles(offset: number = 0): Observable<ArticlesList> {
+    let token = localStorage.getItem('token');
+    if (token == '' || token == null) {
+      return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
+        params: {
+          'limit': '10',
+          'offset': offset.toString()
+        }
+      })
+    }
     return this.http.get<ArticlesList>(`https://conduit.productionready.io/api/articles`, {
       params: {
         'limit': '10',
         'offset': offset.toString()
+      },
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Token ${localStorage.getItem('token')}`
       }
     })
   }

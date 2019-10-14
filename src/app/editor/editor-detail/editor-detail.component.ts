@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { Article } from '../../models/article';
 import { Comment } from '../../models/comment';
+import { ConfirmService } from 'src/app/services/confirm.service';
 
 function minLength(control: FormControl) {
   if(control.value.length > 0) {
@@ -27,10 +28,15 @@ export class EditorComponent implements OnInit {
   public slug: string;
   public tagLists: Array<string> = [];
   public submited: boolean = false;
+  //Nếu ở trạng thái edit thì article sẽ được lưu vào defaultArticle để gửi sang can deactivate để check
+  public defaultArticle;
+  //Biến kiểm tra nếu có tag được nhập để check trong deactivate
+  public enterNewTag: boolean = false;
   constructor(private articleService: ArticleService, 
     private formBuilder: FormBuilder,
     private route: Router,
     private router: ActivatedRoute,
+    public confirmService: ConfirmService 
     ) { }
 
   ngOnInit() {
@@ -42,12 +48,13 @@ export class EditorComponent implements OnInit {
     });
 
     this.router.params.subscribe((params) => {
-      this.isEdit = true;
       this.slug = params.slug;
       if(this.slug != undefined) {
          this.articleService.getArticle(this.slug)
         .subscribe((article: Article) => {
-          console.log(article);
+          this.isEdit = true;
+          // console.log(article);
+          this.defaultArticle = article;
           this.f.title.setValue(article.article.title);
           this.f.description.setValue(article.article.description);
           this.f.body.setValue(article.article.body);
@@ -63,7 +70,7 @@ export class EditorComponent implements OnInit {
     if(!this.f.tagList.value) {
       return;
     }
-
+    this.enterNewTag = true;
     this.tagLists.push(this.f.tagList.value);
     this.f.tagList.setValue('');
   }
