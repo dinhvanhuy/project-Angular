@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-
-
+import { AuthGuard } from "./auth/auth.guard";
 
 const appRouter: Routes =[
   {
@@ -13,6 +12,10 @@ const appRouter: Routes =[
     path: '',
     loadChildren: () => import('./profile/profile.module').then(mod => mod.ProfileModule),
     data: { preload: true }
+  },
+  {
+    path: '**', 
+    redirectTo: ''
   }
   
 ]

@@ -15,12 +15,17 @@ export class UserService {
       'Authorization': `Token ${localStorage.getItem('token')}`,
       'Accept': `application/json`,
       'Content-Type': `application/json;charset=UTF-8`,
-
     })
 
   constructor(private httpClient: HttpClient) { }
 
   updateProFile(pictureUrl: string, username: string, bio: string, email: string, password: string): Observable<User> {
+    localStorage.setItem('password', password);
+    const httpHeader = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`,
+      'Accept': `application/json`,
+      'Content-Type': `application/json;charset=UTF-8`
+    })
     return this.httpClient.put<User>(this.url, {
       'user': {
         'email': email,
@@ -30,10 +35,10 @@ export class UserService {
         'bio': bio
       }
     }, {
-      headers: this.httpHeader
+      headers: httpHeader
     })
   }
-
+  
   getUserDetail(userName: string): Observable<Profile>{
     return this.httpClient.get<Profile>(`${this.userUrl}/${userName}`, {headers:this.httpHeader});
   }
@@ -48,4 +53,6 @@ export class UserService {
   unfollowUser(userName: string): Observable<Profile>{
     return this.httpClient.delete<Profile>(`${this.userUrl}/${userName}/follow`, {headers:this.httpHeader});
   }
+
+
 }

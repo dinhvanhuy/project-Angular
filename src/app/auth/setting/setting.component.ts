@@ -5,6 +5,7 @@ import { User } from '../../models/user';
 import { ErrorSignup } from 'src/app/models/httpErrorResponse';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { ConfirmService } from 'src/app/services/confirm.service';
 
 @Component({
   selector: 'app-setting',
@@ -14,18 +15,20 @@ import { Router } from '@angular/router';
 export class SettingComponent implements OnInit {
   settingForm: FormGroup;
   errorList: string[];
+  onClickLogout: boolean = false; //Biến để xác định xem người dùng muốn chuyển sang route khác hay bấm logout
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { 
+  constructor(private userService: UserService, private authService: AuthService, private router: Router,
+    public confirmService: ConfirmService) { 
   
   }
 
   ngOnInit() {
     this.settingForm = new FormGroup({
-      'pictureUrl': new FormControl(this.userService.user.user.image),
-      'name': new FormControl(this.userService.user.user.username),
-      'bio': new FormControl(this.userService.user.user.bio),
-      'email': new FormControl(this.userService.user.user.email),
-      'password': new FormControl(this.userService.user.user.password)
+      'pictureUrl': new FormControl(localStorage.getItem('image') != 'null' ? localStorage.getItem('image') : ''),
+      'name': new FormControl(localStorage.getItem('username')),
+      'bio': new FormControl(localStorage.getItem('bio') != 'null' ? localStorage.getItem('bio') : ''),
+      'email': new FormControl(localStorage.getItem('email')),
+      'password': new FormControl(localStorage.getItem('password'))
     })
   }
 
@@ -38,6 +41,12 @@ export class SettingComponent implements OnInit {
                                   this.settingForm.controls['password'].value)
       .subscribe((user: User) => {
         this.userService.user = user;
+        localStorage.setItem('bio', user.user.bio);
+        localStorage.setItem('email', user.user.email);
+        localStorage.setItem('password', user.user.password);
+        localStorage.setItem('username', this.userService.user.user.username);
+        localStorage.setItem('image', this.userService.user.user.image);
+        this,this.router.navigate(['/']);
       }, (error: ErrorSignup) => {
         this.errorList = [];
         //Lưu lại danh sách các error trả về
@@ -64,10 +73,15 @@ export class SettingComponent implements OnInit {
 
   onLogout() {
     //thay đổi tình trạng đăng nhập, xóa token trong máy
+    this.onClickLogout = true;
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.authService.isLoggin = false;
+    localStorage.removeItem('password');
+    localStorage.removeItem('image');
+    localStorage.removeItem('bio');
+    localStorage.removeItem('email');
     this.authService.token = '';
+    this.authService.isLoggin.emit(false);
     //Điều hướng về trang chủ
     this.router.navigate(['/']);
   }

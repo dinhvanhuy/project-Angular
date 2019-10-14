@@ -25,21 +25,23 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signinForm);
+    // console.log(this.signinForm);
     this.authService.login(this.signinForm.controls['email'].value, this.signinForm.controls['password'].value)
       .subscribe((user: User) => {
         //Gán user đang đăng nhập vào user trong UserService
         this.userService.user = user; 
-        //Gán token vào localStorage
+        //Gán token và info của người dùng vào localStorage để hiển thị ở trang chủ và trang setting
         this.authService.token = user.user.token;
         localStorage.setItem('token', this.authService.token);
+        localStorage.setItem('bio', user.user.bio);
+        localStorage.setItem('email', user.user.email);
         localStorage.setItem('username', this.userService.user.user.username);
+        localStorage.setItem('image', this.userService.user.user.image);
         //Thay đổi trạng thái thành đã đăng nhập
-        this.authService.isLoggin = true;
+        this.authService.isLoggin.emit(true);
         this.invalidError = '';
         //Đưa về trang chủ sau khi đã đăng nhập
         this.router.navigate(['/']);
-        // console.log(user.user.email);
       }, () => {
         this.invalidError = "email or password is invalid";
       })
