@@ -42,24 +42,19 @@ export class ProfileComponent implements OnInit {
      return params.replace('@', '').trim();
   }
 
-  updateFollow() {
-    if(this.follow === 'Follow') {
-      this.userService.followUser(this.userName)
-        .subscribe((profile: Profile) => {
-          this.follow = profile.profile.following ? 'Unfollow' : 'Follow';
-        })
-    } else {
-      this.userService.unfollowUser(this.userName)
-        .subscribe((profile: Profile) => {
-          this.follow = profile.profile.following ? 'Unfollow' : 'Follow';
-        })
+  updateFollow(following: boolean) {
+    if(localStorage .getItem('username') == null) {
+      return this.route.navigate(['/login'])
     }
+    
+    this.profile.following = !following;
+    this.follow = !following ? 'Unfollow' : 'Follow';
+    this.profile.following ? this.userService.followUser(this.userName).subscribe() : this.userService.unfollowUser(this.userName).subscribe();
   }
 
   getSetting() {
     this.route.navigate(['/settings']);
   }
-
 
   getArticlesCount(articlesCount: number) {
     this.articlesCount = articlesCount;

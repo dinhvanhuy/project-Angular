@@ -13,6 +13,8 @@ import { Comment } from '../../models/comment';
 export class CommentDetailComponent implements OnInit {
   public nameComment: string;
   public listComents: Array<Comment>;
+  public image: string;
+  public userName: string;
   @Input() slug: string;
 
   constructor(private commentService: CommentService) { }
@@ -26,6 +28,8 @@ export class CommentDetailComponent implements OnInit {
       .subscribe((comments: Comments) => {
         this.listComents = comments.comments;
       });
+    this.image = localStorage.getItem('image');
+    this.userName = localStorage.getItem('username');
   }
 
   addComments() {

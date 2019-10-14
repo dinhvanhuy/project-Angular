@@ -7,13 +7,13 @@
           <h4>{{profile?.username }}</h4>
           <p>{{profile?.bio }}</p>
           <ng-template [ngIf]="isView" [ngIfElse]="btn1">
-            <button class="btn btn-sm btn-outline-secondary action-btn" (click)="getSetting()">
+            <button class="btn btn-sm btn-outline-secondary action-btn" (click)="getSetting(profile?.following)">
               <i class="ion-gear-a"></i>&nbsp; Edit Profile Settings
             </button>
           </ng-template>
 
           <ng-template #btn1>
-            <button class="btn btn-sm btn-outline-secondary action-btn" (click)="updateFollow()">
+            <button class="btn btn-sm btn-outline-secondary action-btn" (click)="updateFollow(profile?.following)">
               <i class="ion-plus-round"></i>
               &nbsp; {{follow}} {{profile?.username}} 
             </button>

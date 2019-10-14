@@ -20,6 +20,7 @@ export class ArticleDetailComponent implements OnInit {
   public favorite: string;
   public username: string;
   public params : string;
+  public isAuth: boolean = true;
   constructor(private articleService: ArticleService, 
   	private router: ActivatedRoute,
   	private route: Router,
@@ -32,13 +33,17 @@ export class ArticleDetailComponent implements OnInit {
   	});
     this.getDetailArticle(this.slug);
 
+    if(localStorage.getItem('username') == null) {
+      this.isAuth = false;
+    }
+
   }
 
   removeArticle() {
   	this.router.params.subscribe((params: any) => {
   		this.articleService.removeArticle(params.slug)
   		.subscribe(() => {
-  			this.route.navigate(['/editor']);
+  			this.route.navigate(['/']);
   		}) 
 
   	})
@@ -48,12 +53,12 @@ export class ArticleDetailComponent implements OnInit {
   	this.articleService.getArticle(slug).subscribe((article: any) => {
       this.article = article.article;
       this.author = article.article.author;
-      this.username =  this.author.username;
-      this.params =  '/@'+this.author.username;
+      this.username =  article.article.author.username;
+      this.params =  '/@' + article.article.author.username;
   		this.markdown = article.article.body;
       this.follow = this.author.following  ? 'Unfollow' : 'Follow';
       this.favorite = this.article.favorited ? 'Unfavorite' : 'Favorite';
-      if(this.author.username !== localStorage.getItem('username')) {
+      if(this.author.username !== localStorage.getItem('username') || localStorage.getItem('username') == null) {
         this.isView =  true;
       }
   	})
@@ -63,40 +68,29 @@ export class ArticleDetailComponent implements OnInit {
   	this.route.navigate(['/editor', this.slug]);
   }
 
-  updateFavoriteArticle() {
-    if(this.favorite === 'Favorite') {
-      this.articleService.addFavoritedArticle(this.slug).
-      subscribe(article => {
-        this.favorite = article.article.favorited ? 'Unfavorite' : 'Favorite';
-        this.article = article.article;
-      })
-    } else {
-      this.articleService.removeFavoritedArticle(this.slug).
-      subscribe(article => {
-        this.favorite = article.article.favorited ? 'Unfavorite' : 'Favorite';
-        this.article = article.article;
-      })
+  veryfyAuth() {
+    if(localStorage.getItem('username') == null) {
+      return this.route.navigate(['/login']);
     }
+  }
+
+  updateFavoriteArticle(favorited) {
+    this.veryfyAuth();
+    this.article.favorited = !favorited;
+    favorited ? this.article.favoritesCount-- : this.article.favoritesCount++;
+    this.favorite = !favorited ? 'Unfavorite' : 'Favorite';
+    this.article.favorited ? this.articleService.addFavoritedArticle(this.slug).subscribe() : this.articleService.removeFavoritedArticle(this.slug).subscribe();
   }
 
   getProfile(userName) {
     this.route.navigate([`@${userName}`])
   }
 
-
-  updateFollow() {
-    if(this.follow === 'Follow') {
-      this.userService.followUser(this.username).
-        subscribe(profile => {
-        this.follow = profile.profile.following  ? 'Unfollow' : 'Follow';
-
-      })
-    } else {
-      this.userService.unfollowUser(this.username).
-        subscribe(profile => {
-        this.follow = profile.profile.following  ? 'Unfollow' : 'Follow';
-      })
-    }
+  updateFollow(following) {
+    this.veryfyAuth();
+    this.author.following = !following;
+    this.follow = !following ? 'Unfollow' : 'Follow';
+    this.author.following ? this.userService.followUser(this.username).subscribe() : this.userService.unfollowUser(this.username).subscribe();
   }
 
 }

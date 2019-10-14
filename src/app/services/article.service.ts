@@ -18,47 +18,55 @@ export class ArticleService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     })
   }
+  private follow: string;
   private subject = new Subject<any>();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public addArticle(data: any): Observable<Article> {
     return this.http.post<Article>(this.url, data, this.httpOptions);
   }
 
   public removeArticle(slug: string): Observable<Article> {
-    return this.http.delete<Article>(`${this.url}/${slug}`, this.httpOptions)
+    return this.http.delete<Article>(`${this.url}/${slug}`, this.httpOptions);
   }
 
   public getArticle(slug: string): Observable<Article> {
-    return this.http.get<Article>(`${this.url}/${slug}`, this.httpOptions);
+    return localStorage.getItem('token') ? this.http.get<Article>(`${this.url}/${slug}`, this.httpOptions) : this.http.get<Article>(`${this.url}/${slug}`);
   }
 
   public updateArticle(slug: string, data: any): Observable<Article> {
     return this.http.put<Article>(`${this.url}/${slug}`, data, this.httpOptions);
   }
 
-  public getArticleAuthor(author: string, offset = 0) {
-    let params = {
+  public getArticleAuthor(author: string, offset = '0') {
+    const params = {
       author:author,
-      limit: 10,
-      offset: offset,
-    };
-    this.httpOptions['params'] = params;
+      limit: '10',
+      offset: offset.toString(),
+    }
+    if(localStorage.getItem('token')) {
+      this.httpOptions['params'] = params;
 
-    return this.http.get(this.url, this.httpOptions);
+      return this.http.get(this.url, this.httpOptions);
+    }
+
+    return this.http.get(this.url, { params: {...params}});
   }
 
-  public getArticleFavorited(author: string, offset = 0) {
-    let params =  {
-      favorited:author,
-      limit: 10,
-      offset: offset,
-    };
-    this.httpOptions['params'] = params;
+  public getArticleFavorited(author: string, offset = '0') {
+    const params = {
+      favorited: author,
+      limit: '10',
+      offset: offset.toString(),
+    }
+    if(localStorage.getItem('token')) {
+      this.httpOptions['params'] = params;
 
-    return this.http.get(this.url, this.httpOptions);
+      return this.http.get(this.url, this.httpOptions);
+    }
+
+    return this.http.get(this.url, { params: {...params}});
   }
 
   public sendNumberArticle(numberArticle: number) {
@@ -83,7 +91,7 @@ export class ArticleService {
   }
 
   public removeFavoritedArticle(slug: string): Observable<Article> {
-    return this.http.delete<Article>(`${this.url}/${slug}/favorite`, this.httpOptions)
+    return this.http.delete<Article>(`${this.url}/${slug}/favorite`, this.httpOptions);
   }
 
   //Lấy danh sách các article mà user đang đăng nhập đang follow
@@ -122,5 +130,4 @@ export class ArticleService {
       }
     })
   }
-
 }
