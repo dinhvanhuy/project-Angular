@@ -24,9 +24,9 @@ export class SettingComponent implements OnInit {
 
   ngOnInit() {
     this.settingForm = new FormGroup({
-      'pictureUrl': new FormControl(localStorage.getItem('image')),
+      'pictureUrl': new FormControl(localStorage.getItem('image') != 'null' ? localStorage.getItem('image') : ''),
       'name': new FormControl(localStorage.getItem('username')),
-      'bio': new FormControl(localStorage.getItem('bio')),
+      'bio': new FormControl(localStorage.getItem('bio') != 'null' ? localStorage.getItem('bio') : ''),
       'email': new FormControl(localStorage.getItem('email')),
       'password': new FormControl(localStorage.getItem('password'))
     })

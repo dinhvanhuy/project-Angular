@@ -32,7 +32,8 @@
 <!-- Articles list -->
 <div *ngFor="let article of articles" class="article-preview">
   <div class="article-meta">
-    <a href="#">
+    <a 
+      [routerLink]="['article', article.slug]">
       <img src="{{ article.author.image }}" />
     </a>
     <div class="info">
