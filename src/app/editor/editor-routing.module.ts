@@ -6,11 +6,11 @@ import { ArticleDetailComponent } from './article-detail/article-detail.componen
 
 const routes: Routes = [
   {
-    path: ':slug',
+    path: 'editor/:slug',
     component: EditorComponent,
   },
   {
-    path: '',
+    path: 'editor',
     component: EditorComponent,
   },
   {

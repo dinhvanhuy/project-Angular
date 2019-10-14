@@ -14,7 +14,8 @@ export class UserService {
   public httpHeader = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`,
       'Accept': `application/json`,
-      'Content-Type': `application/json;charset=UTF-8`
+      'Content-Type': `application/json;charset=UTF-8`,
+
     })
 
   constructor(private httpClient: HttpClient) { }
@@ -34,14 +35,17 @@ export class UserService {
   }
 
   getUserDetail(userName: string): Observable<Profile>{
-    return this.httpClient.get<Profile>(`${this.userUrl}/${userName}`, this.httpHeader);
+    return this.httpClient.get<Profile>(`${this.userUrl}/${userName}`, {headers:this.httpHeader});
   }
 
   followUser(userName: string): Observable<Profile>{
-    return this.httpClient.get<Profile>(`${this.userUrl}/${userName}/follow`, this.httpHeader);
+    return this.httpClient.post<Profile>(`${this.userUrl}/${userName}/follow`,{
+       withCredentials: true
+    },{headers:this.httpHeader},
+    );
   }
 
   unfollowUser(userName: string): Observable<Profile>{
-    return this.httpClient.delte<Profile>(`${this.userUrl}/${userName}/follow`, this.httpHeader);
+    return this.httpClient.delete<Profile>(`${this.userUrl}/${userName}/follow`, {headers:this.httpHeader});
   }
 }

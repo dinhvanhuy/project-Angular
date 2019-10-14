@@ -4,12 +4,12 @@
       <div class="articles-toggle">
         <ul class="nav nav-pills outline-active">
           <li class="nav-item">
-            <a class="nav-link" (click)="getArticle(1)" 
+            <a class="nav-link curpoint" (click)="getArticle(1)" 
             [ngClass]="{'active':type==1}"
             >My Articles</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click)="getArticle(2)"
+            <a class="nav-link curpoint" (click)="getArticle(2)"
             [ngClass]="{'active':type==2}"
             >Favorited Articles</a>
           </li>
@@ -17,23 +17,26 @@
       </div>
       <div class="article-preview" *ngFor="let articleAuthor of articlesAuthor; let i = index">
   <div class="article-meta">
-    <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
+    <a href=""><img [src]="articleAuthor?.author.image" /></a>
     <div class="info">
-      <a href="" class="author">Eric Simons</a>
-      <span class="date">January 20th</span>
+      <a [routerLink]="['/@'+articleAuthor?.author.username]" class="author">{{articleAuthor?.author.username}}</a>
+      <span class="date">{{articleAuthor?.createdAt | date:'longDate'}}</span>
     </div>
     <button class="btn btn-outline-primary btn-sm pull-xs-right"
-    (click)="updateFavorited(articleAuthor.article.favorited, articleAuthor.article.favoritesCount, i, articleAuthor.article.slug)"  
-    [ngClass]="{'btn-primary': articleAuthor.favorited}"
+      (click)="updateFavorited(articleAuthor?.favorited, i, articleAuthor?.slug)" [ngClass]="{'btn-primary': articleAuthor?.favorited}"
     >
-    <i class="ion-heart"></i> {{articleAuthor.favoritesCount}}
+    <i class="ion-heart"></i> {{articleAuthor?.favoritesCount}}
     </button>
   </div>
   <a class="preview-link">
-    <h1>{{articleAuthor.title}}</h1>
-    <p>{{articleAuthor.description}}</p>
-    <span (click)="detailArticle(articleAuthor.article.slug)">Read more...</span>
+    <h1>{{articleAuthor?.title}}</h1>
+    <p>{{articleAuthor?.description}}</p>
+    <span class="curpoint" (click)="detailArticle(articleAuthor?.slug)">Read more...</span>
+    <ul class="tag-list">
+      <li class="tag-default tag-pill tag-outline" *ngFor="let item of articleAuthor?.tagList">{{item}}</li>
+    </ul>
   </a>
+
 </div>
     </div>
   </div>

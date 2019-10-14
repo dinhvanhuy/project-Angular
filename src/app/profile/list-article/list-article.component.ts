@@ -11,9 +11,11 @@ import { Articles} from '../../models/articles';
   styleUrls: ['./list-article.component.css']
 })
 export class ListArticleComponent implements OnInit, OnDestroy {
-	public articlesAuthor: Array<Article>;
+	public articlesAuthor;
 	public type: number;
+  private userName: string;
 	public subscription: Subscription;
+  public params: string;
 
 	@Input() currentPage:number;
     constructor(private articleService: ArticleService,
@@ -24,17 +26,17 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
   	this.route.url.subscribe((params) => {
+      this.params = params[0].path;
+      this.userName = this.removeFirst(params[0].path); 
   		if(params.length === 1) {
-  			this.articleService.getArticleAuthor('huy1994321')
+  			this.articleService.getArticleAuthor(this.userName)
 			  	.subscribe((articles: Articles) => {
 			  		this.type = 1;
             this.articleService.sendNumberArticle(articles.articlesCount);
-           console.log(articles.articlesCount)
-            
             this.articlesAuthor = articles.articles;
   		});
   		} else {
-  			this.articleService.getArticleFavorited('huy1994321')
+  			this.articleService.getArticleFavorited(this.userName)
   			.subscribe((articles: Articles) => {
   				this.type = 2;
           this.articleService.sendNumberArticle(articles.articlesCount);
@@ -42,6 +44,8 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   		});
   		}
   	});
+
+    
   	
 
   	this.subscription = this.articleService.getIndexPage().
@@ -52,33 +56,40 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   		});
   }
 
+  removeFirst(params) {
+     return params.replace('@', '').trim();
+  }
+
   getArticle(type: number) {
   	if(this.type === type) {
   		return;
   	}
-  	type === 1 ? this.router.navigate(['profile/huy1994321']): this.router.navigate(['profile/huy1994321/favorites']);
+  	type === 1 ? this.router.navigate([this.params]): this.router.navigate([this.params, 'favorites']);
   	
+  }
+  getProfile() {
+    this.router.navigate([this.params])
   }
 
   getData(offset: number = 0) {
 		if(this.type == 1) {
-		this.articleService.getArticleAuthor('huy1994321', offset)
+		this.articleService.getArticleAuthor(this.userName, offset)
 			.subscribe((articles: Articles) => {
 				this.articlesAuthor = articles.articles;
 		});
   	} else {
-  		this.articleService.getArticleFavorited('huy1994321', offset)
+  		this.articleService.getArticleFavorited(this.userName, offset)
   			.subscribe((articles: Articles) => {
   				this.articlesAuthor = articles.articles;
   		});
   }
 }	
 	
-	updateFavorited(favorited: boolean, favoritesCount: number, i: number, slug: string) {
+	updateFavorited(favorited: boolean, i: number, slug: string) {
 		this.articlesAuthor =  this.articlesAuthor.map((item, index) => {
 			if(i ===  index) {
-				favorited ? item.article.favoritesCount-- : item.article.favoritesCount++
-				item.article.favorited = !item.article.favorited;
+				favorited ? item.favoritesCount-- : item.favoritesCount++;
+				item.favorited = !item.favorited;
 			}
 			return item;
 		});
@@ -87,8 +98,7 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 	}
 
   detailArticle(slug: string) {
-  	this.router.navigate(['editor/article', slug])
-  	
+  	this.router.navigate(['/article', slug])
   }
  	
  	ngOnDestroy() {

@@ -14,8 +14,10 @@ export class ProfileComponent implements OnInit {
   public articlesCount: number;
   public currentPage: number;
   public isView: boolean = false;
-  public username: string;
-  public profile: Profile; 
+  private userName: string;
+  public profile; 
+  public follow: string;
+  
   constructor(private articleService: ArticleService,
     private userService: UserService,
     private router: ActivatedRoute,
@@ -24,23 +26,40 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.router.params.subscribe(({userName}) => {
-      if(userName === localStorage.getItem('username')) {
+      this.userName = this.removeFirst(userName);
+      if(this.userName === localStorage .getItem('username')) {
         this.isView =  true;
-        this.userService.getUserDetail(userName)
-          .subscribe((profile: Profile) => {
-            this.profile =  profile;
-          });
       }
+      this.userService.getUserDetail(this.userName)
+          .subscribe((profile: Profile) => {
+            this.profile =  profile.profile;
+            this.follow = this.profile.following ? 'Unfollow' : 'Follow';
+          });
     })
   }
 
-  updateFollow() {
+  removeFirst(params) {
+     return params.replace('@', '').trim();
+  }
 
+  updateFollow() {
+    if(this.follow === 'Follow') {
+      this.userService.followUser(this.userName)
+        .subscribe((profile: Profile) => {
+          this.follow = profile.profile.following ? 'Unfollow' : 'Follow';
+        })
+    } else {
+      this.userService.unfollowUser(this.userName)
+        .subscribe((profile: Profile) => {
+          this.follow = profile.profile.following ? 'Unfollow' : 'Follow';
+        })
+    }
   }
 
   getSetting() {
     this.route.navigate(['/settings']);
   }
+
 
   getArticlesCount(articlesCount: number) {
     this.articlesCount = articlesCount;

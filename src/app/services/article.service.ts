@@ -9,6 +9,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ArticleService {
   public url = 'https://conduit.productionready.io/api/articles';
+  private userUrl: string = 'https://conduit.productionready.io/api/profiles';
   public httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -24,16 +25,16 @@ export class ArticleService {
     return this.http.post<Article>(this.url, data, this.httpOptions);
   }
 
-  public removeArticle(idArticle: string): Observable<Article> {
-    return this.http.delete<Article>(`${this.url}/${idArticle}`, this.httpOptions)
+  public removeArticle(slug: string): Observable<Article> {
+    return this.http.delete<Article>(`${this.url}/${slug}`, this.httpOptions)
   }
 
-  public getArticle(idArticle: string): Observable<Article> {
-    return this.http.get<Article>(`${this.url}/${idArticle}`, this.httpOptions);
+  public getArticle(slug: string): Observable<Article> {
+    return this.http.get<Article>(`${this.url}/${slug}`, this.httpOptions);
   }
 
-  public updateArticle(idArticle: string, data: any): Observable<Article> {
-    return this.http.put<Article>(`${this.url}/${idArticle}`, data, this.httpOptions);
+  public updateArticle(slug: string, data: any): Observable<Article> {
+    return this.http.put<Article>(`${this.url}/${slug}`, data, this.httpOptions);
   }
 
   public getArticleAuthor(author: string, offset = 0) {
@@ -75,7 +76,8 @@ export class ArticleService {
   }
 
   public addFavoritedArticle(slug: string): Observable<Article> {
-    return this.http.post<Article>(`${this.url}/${slug}/favorite`, this.httpOptions)
+    return this.http.post<Article>(`${this.url}/${slug}/favorite`,
+      { withCredentials: true }, this.httpOptions)
   }
 
   public removeFavoritedArticle(slug: string): Observable<Article> {

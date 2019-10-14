@@ -48,5 +48,4 @@ export class CommentDetailComponent implements OnInit {
       this.getListComent();
     })
   }
-
 }

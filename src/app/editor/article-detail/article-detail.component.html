@@ -1,81 +1,85 @@
 <div class="article-page">
-    <div class="banner">
-        <div class="container">
-            <h1>How to build webapps that scale</h1>
-            <div class="article-meta">
-                <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-                <div class="info">
-                    <a href="" class="author">Eric Simons</a>
-                    <span class="date">January 20th</span>
-                </div>
-                <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
-                    <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
-          <i class="ion-plus-round"></i>
-          &nbsp;
-          Follow Eric Simons <span class="counter"></span>
-        </button> &nbsp;&nbsp;
-                    <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
-          <i class="ion-heart"></i>
-          &nbsp;
-          Favorite Article <span class="counter">({{article.article.favoritesCount}})</span>
-        </button>
-                </ng-template>
-                <ng-template #isAuthor>
-                    <button class="btn btn-sm btn-outline-secondary" (click)="editArticle()">
-          <i class="ion-edit"></i>
-             &nbsp;
-              Edit Article
-          </button> &nbsp;
-                    <button class="btn btn-sm btn-outline-danger" (click)="removeArticle()">
-      <i class="ion-trash-a"></i>
+<div class="banner">
+  <div class="container">
+    <h1>{{article?.title}}</h1>
+    <div class="article-meta">
+      <a href=""><img [src]="author?.image" /></a>
+      <div class="info">
+        <a [routerLink]="[params]" class="author">{{author?.username}}</a>
+        <span class="date">{{article?.createdAt | date:'longDate'}}</span>
+      </div>
+      <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
+      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
+      <i class="ion-plus-round"></i>
       &nbsp;
-      Delete Article
+      {{follow}} {{author?.username}} <span class="counter"></span>
+      </button> &nbsp;&nbsp;
+      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
+      <i class="ion-heart"></i>
+      &nbsp;
+      {{favorite}} Article <span class="counter">({{article?.favoritesCount}})</span>
       </button>
-                </ng-template>
-
-            </div>
-        </div>
-    </div>
-    <div class="container page">
-        <div class="row article-content">
-            <div class="col-md-12">
-                <markdown [data]="markdown">
-                </markdown>
-            </div>
-        </div>
-        <hr />
-        <div class="article-actions">
-            <div class="article-meta">
-                <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-                <div class="info">
-                    <a href="" class="author">Eric Simons</a>
-                    <span class="date">January 20th</span>
-                </div>
-                <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
-                    <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
-          <i class="ion-plus-round"></i>
-          &nbsp;
-          Follow Eric Simons <span class="counter"></span>
-        </button> &nbsp;&nbsp;
-                    <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
-          <i class="ion-heart"></i>
-          &nbsp;
-          Favorite Article <span class="counter">({{article.article.favoritesCount}})</span>
+      </ng-template>
+      <ng-template #isAuthor>
+        <button class="btn btn-sm btn-outline-secondary" (click)="editArticle()">
+        <i class="ion-edit"></i>
+        &nbsp;
+        Edit Article
+        </button> &nbsp;
+        <button class="btn btn-sm btn-outline-danger" (click)="removeArticle()">
+        <i class="ion-trash-a"></i>
+        &nbsp;
+        Delete Article
         </button>
-                </ng-template>
-                <ng-template #isAuthor>
-                    <button class="btn btn-sm btn-outline-secondary" (click)="editArticle()">
-      <i class="ion-edit"></i>
-      &nbsp;
-      Edit Article
-      </button> &nbsp;
-                    <button class="btn btn-sm btn-outline-danger" (click)="removeArticle()">
-      <i class="ion-trash-a"></i>
-      &nbsp;
-      Delete Article
-      </button>
-                </ng-template>
-            </div>
-        </div>
-        <app-comment-detail [slug]="slug"></app-comment-detail>
+      </ng-template>
     </div>
+  </div>
+</div>
+<div class="container page">
+  <div class="row article-content">
+    <div class="col-md-12">
+      <markdown [data]="markdown">
+      </markdown>
+      <ul class="tag-list">
+        <li class="tag-default tag-pill tag-outline" *ngFor="let item of article?.tagList">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr />
+  <div class="article-actions">
+    <div class="article-meta">
+      <a href="profile.html"><img [src]="author?.image" /></a>
+      <div class="info">
+        <a  [routerLink]="[params]" class="author">{{author?.username}}</a>
+        <span class="date">{{article?.createdAt | date:'longDate'}}</span>
+      </div>
+      <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
+      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
+      <i class="ion-plus-round"></i>
+      &nbsp;
+      {{follow}} {{author?.username}} <span class="counter"></span>
+      </button> &nbsp;&nbsp;
+      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
+      <i class="ion-heart"></i>
+      &nbsp;
+      {{favorite}} Article <span class="counter">({{article?.favoritesCount}})</span>
+      </button>
+      </ng-template>
+      <ng-template #isAuthor>
+        <button class="btn btn-sm btn-outline-secondary" (click)="editArticle()">
+        <i class="ion-edit"></i>
+        &nbsp;
+        Edit Article
+        </button> &nbsp;
+        <button class="btn btn-sm btn-outline-danger" (click)="removeArticle()">
+        <i class="ion-trash-a"></i>
+        &nbsp;
+        Delete Article
+        </button>
+      </ng-template>
+    </div>
+  </div>
+  <app-comment-detail [slug]="slug"></app-comment-detail>
+</div>

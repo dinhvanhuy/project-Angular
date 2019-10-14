@@ -5,13 +5,14 @@ import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
 const appRouter: Routes =[
   {
-    path:'editor',
+    path:'',
     loadChildren: () => import('./editor/editor.module').then(mod => mod.EditorModule),
     data: { preload: true }
   }, 
   {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then(mod => mod.ProfileModule)
+    path: '',
+    loadChildren: () => import('./profile/profile.module').then(mod => mod.ProfileModule),
+    data: { preload: true }
   }
   
 ]
