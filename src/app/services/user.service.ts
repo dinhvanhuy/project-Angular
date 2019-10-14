@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { User } from '../models/user';
 import { Profile } from '../models/profile';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
+  nameChange = new EventEmitter<string>()
   user: User;
   url: string = `https://conduit.productionready.io/api/user`;
   userUrl: string = 'https://conduit.productionready.io/api/profiles';

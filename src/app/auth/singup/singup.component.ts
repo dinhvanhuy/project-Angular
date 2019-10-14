@@ -35,16 +35,26 @@ export class SingupComponent implements OnInit {
         console.log(data);
         this.authService.login(this.signupForm.controls['email'].value, this.signupForm.controls['password'].value)
           .subscribe((user: User) => {
+            console.log(user);
             //Gán user đang đăng nhập vào user trong UserService
             this.userService.user = user; 
             //Gán token vào localStorage
             this.authService.token = user.user.token;
             localStorage.setItem('token', this.authService.token);
-            localStorage.setItem('bio', user.user.bio);
             localStorage.setItem('email', user.user.email);
             localStorage.setItem('username', this.userService.user.user.username);
-            localStorage.setItem('image', this.userService.user.user.image);
+            if (user.user.bio == '' || user.user.bio == null) {
+              localStorage.setItem('bio', '');
+            } else {
+              localStorage.setItem('bio', user.user.bio);
+            }
+            if (user.user.image == '' || user.user.image == null) {
+              localStorage.setItem('image', '');
+            } else {
+              localStorage.setItem('image', user.user.image);
+            }
             //Thay đổi trạng thái thành đã đăng nhập
+            this.authService.isLoggin.emit(false);
             this.authService.isLoggin.emit(true);
             //Đưa về trang chủ sau khi đã đăng nhập
             this.router.navigate(['/']);

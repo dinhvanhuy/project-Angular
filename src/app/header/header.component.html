@@ -64,7 +64,7 @@
         *ngIf="token" 
         class="nav-item">
         <a class="nav-link"
-          [routerLink]="['/profile', username]"
+          [routerLink]="['@' + username]"
           [routerLinkActive]="'active'">
           <img 
             class="user-pic" src="{{ image }}" alt="">

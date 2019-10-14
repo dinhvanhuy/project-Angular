@@ -138,7 +138,7 @@ export class HomeArticleListComponent implements OnInit {
     } else {
       //Thay đổi nút heart ở trang chủ
       let classString = heart.className;
-      if (classString.indexOf('btn-outline-primary') >= 0){
+      if (heart.classList.contains('btn-outline-primary')){
         //Nếu đang chưa like thì chuyển thành like
         heart.classList.remove('btn-outline-primary');
         heart.classList.add('btn-primary');

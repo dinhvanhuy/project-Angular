@@ -16,6 +16,7 @@ export class SettingComponent implements OnInit {
   settingForm: FormGroup;
   errorList: string[];
   onClickLogout: boolean = false; //Biến để xác định xem người dùng muốn chuyển sang route khác hay bấm logout
+  onClickSubmit: boolean = false; //Biến để xác định xem người dùng muốn chuyển sang route khác hay bấm submit
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router,
     public confirmService: ConfirmService) { 
@@ -33,7 +34,8 @@ export class SettingComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.settingForm);
+    // console.log(this.settingForm);
+    this.onClickSubmit = true;
     this.userService.updateProFile(this.settingForm.controls['pictureUrl'].value, 
                                   this.settingForm.controls['name'].value,
                                   this.settingForm.controls['bio'].value,
@@ -41,12 +43,20 @@ export class SettingComponent implements OnInit {
                                   this.settingForm.controls['password'].value)
       .subscribe((user: User) => {
         this.userService.user = user;
-        localStorage.setItem('bio', user.user.bio);
         localStorage.setItem('email', user.user.email);
-        localStorage.setItem('password', user.user.password);
         localStorage.setItem('username', this.userService.user.user.username);
-        localStorage.setItem('image', this.userService.user.user.image);
-        this,this.router.navigate(['/']);
+        this.userService.nameChange.emit(user.user.username)
+        if (user.user.bio == '' || user.user.bio == null) {
+          localStorage.setItem('bio', '');
+        } else {
+          localStorage.setItem('bio', user.user.bio);
+        }
+        if (user.user.image == '' || user.user.image == null) {
+          localStorage.setItem('image', '');
+        } else {
+          localStorage.setItem('image', user.user.image);
+        }
+        this.router.navigate(['/']);
       }, (error: ErrorSignup) => {
         this.errorList = [];
         //Lưu lại danh sách các error trả về

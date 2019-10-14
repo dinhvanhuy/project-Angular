@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ export class HeaderComponent implements OnInit {
   token: string;
   image: string;
 
-  constructor(public authService: AuthService) { 
+  constructor(public authService: AuthService, private userService: UserService) { 
     
   }
 
@@ -19,6 +20,10 @@ export class HeaderComponent implements OnInit {
     //gán token bằng token lưu trong localStorage
     this.token = localStorage.getItem('token');
     this.username = localStorage.getItem('username');
+    this.userService.nameChange
+      .subscribe((newName) => {
+        this.username = localStorage.getItem('username');
+      })
     this.image = localStorage.getItem('image');
     //Tùy vào trạng thái đăng nhập để thay đổi token, qua đó thay đổi DOM hiển thị.
     this.authService.isLoggin
