@@ -46,11 +46,12 @@ export class EditorComponent implements OnInit {
       this.slug = params.slug;
       if(this.slug != undefined) {
          this.articleService.getArticle(this.slug)
-        .subscribe(({article}) => {
-          this.f.title.setValue(article.title);
-          this.f.description.setValue(article.description);
-          this.f.body.setValue(article.body);
-          this.tagLists = article.tagList;
+        .subscribe((article: Article) => {
+          console.log(article);
+          this.f.title.setValue(article.article.title);
+          this.f.description.setValue(article.article.description);
+          this.f.body.setValue(article.article.body);
+          this.tagLists = article.article.tagList;
         })
       }
       })
@@ -84,18 +85,17 @@ export class EditorComponent implements OnInit {
     if(this.articleForm.invalid) {
       return;
     }
-    this.f.tagList.setValue(this.tagLists);
     const data = {
-      article: {...this.articleForm.value}
+      article: {...this.articleForm.value, tagList: this.tagLists}
     }
     if(this.slug != undefined) {
       this.articleService.updateArticle(this.slug, data)
-      .subscribe((data: any) => {
+      .subscribe((article: Article) => {
         this.route.navigate(['/article', this.slug]);
       });
     } else {
-      this.articleService.addArticle(data).subscribe((data: any) => {
-      this.route.navigate(['/article', data.article.slug]);
+      this.articleService.addArticle(data).subscribe((article: Article) => {
+      this.route.navigate(['/article', article.article.slug]);
     }); 
     }
   }

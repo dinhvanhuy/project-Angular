@@ -6,7 +6,7 @@
           name="nameComment"></textarea>
       </div>
       <div class="card-footer">
-        <img [src]="comment?.author.image" class="comment-author-img" />
+        <img [src]="image" class="comment-author-img" />
         <button class="btn btn-sm btn-primary" (click)="addComments()">
           Post Comment
         </button>
@@ -23,9 +23,12 @@
         &nbsp;
         <a [routerLink]="['/@'+comment?.author.username]" class="comment-author">{{comment?.author.username}}</a>
         <span class="date-posted">{{comment.createdAt | date:'longDate'}}</span>
-        <span class="mod-options" (click)="removeComments(comment.id)">
-          <i class="ion-trash-a"></i>
-        </span>
+        <ng-template [ngIf]="userName === comment?.author.username">
+          <span class="mod-options" (click)="removeComments(comment.id)">
+            <i class="ion-trash-a"></i>
+          </span>
+        </ng-template>
+        
       </div>
     </div>
   </div>

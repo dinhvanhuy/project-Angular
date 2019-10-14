@@ -3,18 +3,18 @@
   <div class="container">
     <h1>{{article?.title}}</h1>
     <div class="article-meta">
-      <a href=""><img [src]="author?.image" /></a>
+      <a [routerLink]="['/@'+article?.author?.username]"><img [src]="article?.author?.image" /></a>
       <div class="info">
-        <a [routerLink]="[params]" class="author">{{author?.username}}</a>
+        <a [routerLink]="[params]" class="author">{{article?.author?.username}}</a>
         <span class="date">{{article?.createdAt | date:'longDate'}}</span>
       </div>
       <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
-      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
+      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow(article?.author?.following)">
       <i class="ion-plus-round"></i>
       &nbsp;
-      {{follow}} {{author?.username}} <span class="counter"></span>
+      {{follow}} {{article?.author?.username}} <span class="counter"></span>
       </button> &nbsp;&nbsp;
-      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
+      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle(article?.favorited)">
       <i class="ion-heart"></i>
       &nbsp;
       {{favorite}} Article <span class="counter">({{article?.favoritesCount}})</span>
@@ -50,18 +50,18 @@
   <hr />
   <div class="article-actions">
     <div class="article-meta">
-      <a href="profile.html"><img [src]="author?.image" /></a>
+      <a [routerLink]="['/@'+article?.author?.username]"><img [src]="article?.author?.image" /></a>
       <div class="info">
-        <a  [routerLink]="[params]" class="author">{{author?.username}}</a>
+        <a  [routerLink]="[params]" class="author">{{article?.author?.username}}</a>
         <span class="date">{{article?.createdAt | date:'longDate'}}</span>
       </div>
       <ng-template [ngIf]="isView" [ngIfElse]="isAuthor">
-      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow()">
+      <button class="btn btn-sm btn-outline-secondary" (click)="updateFollow(article?.author?.following)">
       <i class="ion-plus-round"></i>
       &nbsp;
-      {{follow}} {{author?.username}} <span class="counter"></span>
+      {{follow}} {{article?.author?.username}} <span class="counter"></span>
       </button> &nbsp;&nbsp;
-      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle()">
+      <button class="btn btn-sm btn-outline-primary" (click)="updateFavoriteArticle(article?.favorited)">
       <i class="ion-heart"></i>
       &nbsp;
       {{favorite}} Article <span class="counter">({{article?.favoritesCount}})</span>
@@ -81,5 +81,20 @@
       </ng-template>
     </div>
   </div>
-  <app-comment-detail [slug]="slug"></app-comment-detail>
+  <ng-template [ngIf]="isAuth" [ngIfElse]="author">
+    <app-comment-detail [slug]="slug"></app-comment-detail>
+  </ng-template>
+  <ng-template #author>
+    <div class="row">
+      <div class="col-xs-12 col-md-8 offset-md-2">
+        <p>
+          <a [routerLink]="['/login']">Sign in</a>
+          or
+          <a [routerLink]="['/register']">Sing up</a>
+          to add comments on this article
+        </p>
+      </div>
+    </div>
+  </ng-template>
+
 </div>

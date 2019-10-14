@@ -16,6 +16,7 @@ export class UserService {
       'Accept': `application/json`,
       'Content-Type': `application/json;charset=UTF-8`,
     })
+  private follow:string;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -38,9 +39,9 @@ export class UserService {
       headers: httpHeader
     })
   }
-  
+
   getUserDetail(userName: string): Observable<Profile>{
-    return this.httpClient.get<Profile>(`${this.userUrl}/${userName}`, {headers:this.httpHeader});
+    return localStorage.getItem('token') ? this.httpClient.get<Profile>(`${this.userUrl}/${userName}`, {headers:this.httpHeader}) : this.httpClient.get<Profile>(`${this.userUrl}/${userName}`);
   }
 
   followUser(userName: string): Observable<Profile>{
@@ -53,6 +54,5 @@ export class UserService {
   unfollowUser(userName: string): Observable<Profile>{
     return this.httpClient.delete<Profile>(`${this.userUrl}/${userName}/follow`, {headers:this.httpHeader});
   }
-
 
 }

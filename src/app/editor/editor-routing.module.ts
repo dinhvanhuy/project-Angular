@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EditorComponent } from './editor-detail/editor-detail.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
+import { AuthGuard } from '../auth/auth.guard'; 
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {
     path: 'editor',
     component: EditorComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'article/:slug',

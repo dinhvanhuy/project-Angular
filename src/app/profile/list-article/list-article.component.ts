@@ -45,9 +45,6 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   		}
   	});
 
-    
-  	
-
   	this.subscription = this.articleService.getIndexPage().
   		subscribe(({numberPage}) => {
   			if(numberPage != undefined) {
@@ -73,19 +70,23 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 
   getData(offset: number = 0) {
 		if(this.type == 1) {
-		this.articleService.getArticleAuthor(this.userName, offset)
+		this.articleService.getArticleAuthor(this.userName, offset.toString())
 			.subscribe((articles: Articles) => {
 				this.articlesAuthor = articles.articles;
 		});
   	} else {
-  		this.articleService.getArticleFavorited(this.userName, offset)
+  		this.articleService.getArticleFavorited(this.userName, offset.toString())
   			.subscribe((articles: Articles) => {
   				this.articlesAuthor = articles.articles;
   		});
-  }
-}	
+    }
+  }	
 	
 	updateFavorited(favorited: boolean, i: number, slug: string) {
+    if(localStorage .getItem('username') == null) {
+      this.router.navigate(['/login'])
+    }
+
 		this.articlesAuthor =  this.articlesAuthor.map((item, index) => {
 			if(i ===  index) {
 				favorited ? item.favoritesCount-- : item.favoritesCount++;
@@ -94,7 +95,6 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 			return item;
 		});
 		favorited ? this.articleService.removeFavoritedArticle(slug).subscribe() :this.articleService.addFavoritedArticle(slug).subscribe();
-
 	}
 
   detailArticle(slug: string) {
