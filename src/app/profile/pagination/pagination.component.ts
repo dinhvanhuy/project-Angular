@@ -23,7 +23,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
   }
 
   getPage(articlesCount) {
-  	for(let i =1; i<= Math.ceil(articlesCount/5); i++) {
+  	for(let i =1; i<= Math.ceil(articlesCount/10); i++) {
   		this.totalPages.push(i);
   	}
   }
