@@ -16,6 +16,7 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 	public subscription: Subscription;
 	public params: string;
 	public articlesCount: number;
+  public limit: number = 10;
 
 	@Input() currentPage:number;
     constructor(private articleService: ArticleService,
@@ -32,7 +33,9 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   			this.articleService.getArticleAuthor(this.userName)
 			  	.subscribe((articles: Articles) => {
 			  		this.type = 1;
-            this.articleService.sendNumberArticle(articles.articlesCount);
+            if(articles.articlesCount > this.limit) {
+              this.articleService.sendNumberArticle(articles.articlesCount);
+            }
 						this.articlesAuthor = articles.articles;
 						this.articlesCount = articles.articlesCount;
   		});
@@ -40,7 +43,9 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   			this.articleService.getArticleFavorited(this.userName)
   			.subscribe((articles: Articles) => {
   				this.type = 2;
-          this.articleService.sendNumberArticle(articles.articlesCount);
+          if(articles.articlesCount > this.limit) {
+            this.articleService.sendNumberArticle(articles.articlesCount);
+          }
 					this.articlesAuthor = articles.articles;
 					this.articlesCount = articles.articlesCount;
   		});
@@ -50,7 +55,7 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   	this.subscription = this.articleService.getIndexPage().
   		subscribe(({numberPage}) => {
   			if(numberPage != undefined) {
-  				this.getData(numberPage*5);
+  				this.getData(numberPage * this.limit);
   			}
   		});
   }
