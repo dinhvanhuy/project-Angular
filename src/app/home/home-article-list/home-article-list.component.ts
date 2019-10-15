@@ -146,7 +146,7 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.addFavoritedArticle(slug)
           .subscribe((article) => {
-            console.log('Đã like');
+            // console.log('Đã like');
             
           })
       } else {
@@ -157,7 +157,7 @@ export class HomeArticleListComponent implements OnInit {
         heart.lastChild.replaceWith(document.createTextNode(' ' + num.toString()))
         this.articleService.removeFavoritedArticle(slug)
           .subscribe((article) => {
-            console.log('Đã dislike');
+            // console.log('Đã dislike');
           })
       }
     }
