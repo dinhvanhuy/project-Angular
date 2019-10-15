@@ -1,6 +1,7 @@
 I. Tổng quan
 
 ![alt text](https://github.com/xhieu94/Image/blob/master/Modules.png)
+
 II. Modules Detail
 
 1. App Module
