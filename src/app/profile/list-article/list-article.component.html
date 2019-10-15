@@ -4,41 +4,75 @@
       <div class="articles-toggle">
         <ul class="nav nav-pills outline-active">
           <li class="nav-item">
-            <a class="nav-link curpoint" (click)="getArticle(1)" 
-            [ngClass]="{'active':type==1}"
-            >My Articles</a>
+            <a
+              class="nav-link curpoint"
+              (click)="getArticle(1)"
+              [ngClass]="{ active: type == 1 }"
+              >My Articles</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link curpoint" (click)="getArticle(2)"
-            [ngClass]="{'active':type==2}"
-            >Favorited Articles</a>
+            <a
+              class="nav-link curpoint"
+              (click)="getArticle(2)"
+              [ngClass]="{ active: type == 2 }"
+              >Favorited Articles</a
+            >
           </li>
         </ul>
       </div>
-      <div class="article-preview" *ngFor="let articleAuthor of articlesAuthor; let i = index">
-  <div class="article-meta">
-    <a href=""><img [src]="articleAuthor?.author.image" /></a>
-    <div class="info">
-      <a [routerLink]="['/@'+articleAuthor?.author.username]" class="author">{{articleAuthor?.author.username}}</a>
-      <span class="date">{{articleAuthor?.createdAt | date:'longDate'}}</span>
+      <ng-template [ngIf]="articlesCount == 0" [ngIfElse]="loading">
+        No articles are here... yet.
+      </ng-template>
+      <ng-template #loading>
+        <div
+          class="article-preview"
+          *ngFor="let articleAuthor of articlesAuthor; let i = index">
+          <div class="article-meta">
+            <a href="">
+              <img [src]="articleAuthor?.author.image ? articleAuthor?.author.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'"/>
+            </a>
+            <div class="info">
+              <a
+                [routerLink]="['/@' + articleAuthor?.author.username]"
+                class="author"
+                >{{ articleAuthor?.author.username }}</a
+              >
+              <span class="date">{{
+                articleAuthor?.createdAt | date: "longDate"
+              }}</span>
+            </div>
+            <button
+              class="btn btn-outline-primary btn-sm pull-xs-right"
+              (click)="
+                updateFavorited(
+                  articleAuthor?.favorited,
+                  i,
+                  articleAuthor?.slug
+                )
+              "
+              [ngClass]="{ 'btn-primary': articleAuthor?.favorited }"
+            >
+              <i class="ion-heart"></i> {{ articleAuthor?.favoritesCount }}
+            </button>
+          </div>
+          <a class="preview-link">
+            <h1>{{ articleAuthor?.title }}</h1>
+            <p>{{ articleAuthor?.description }}</p>
+            <span class="curpoint" (click)="detailArticle(articleAuthor?.slug)"
+              >Read more...</span
+            >
+            <ul class="tag-list">
+              <li
+                class="tag-default tag-pill tag-outline"
+                *ngFor="let item of articleAuthor?.tagList"
+              >
+                {{ item }}
+              </li>
+            </ul>
+          </a>
+        </div>
+      </ng-template>
     </div>
-    <button class="btn btn-outline-primary btn-sm pull-xs-right"
-      (click)="updateFavorited(articleAuthor?.favorited, i, articleAuthor?.slug)" [ngClass]="{'btn-primary': articleAuthor?.favorited}"
-    >
-    <i class="ion-heart"></i> {{articleAuthor?.favoritesCount}}
-    </button>
-  </div>
-  <a class="preview-link">
-    <h1>{{articleAuthor?.title}}</h1>
-    <p>{{articleAuthor?.description}}</p>
-    <span class="curpoint" (click)="detailArticle(articleAuthor?.slug)">Read more...</span>
-    <ul class="tag-list">
-      <li class="tag-default tag-pill tag-outline" *ngFor="let item of articleAuthor?.tagList">{{item}}</li>
-    </ul>
-  </a>
-
-</div>
-    </div>
   </div>
 </div>
-

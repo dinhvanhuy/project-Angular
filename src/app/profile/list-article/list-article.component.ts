@@ -2,7 +2,6 @@ import { Component, OnInit, Input,  Output, EventEmitter, OnDestroy } from '@ang
 import { ActivatedRoute, Router} from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { Subscription, from } from 'rxjs';
-import { Article } from '../../models/article';
 import { Articles} from '../../models/articles';
 
 @Component({
@@ -15,7 +14,8 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 	public type: number;
   private userName: string;
 	public subscription: Subscription;
-  public params: string;
+	public params: string;
+	public articlesCount: number;
 
 	@Input() currentPage:number;
     constructor(private articleService: ArticleService,
@@ -33,14 +33,16 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 			  	.subscribe((articles: Articles) => {
 			  		this.type = 1;
             this.articleService.sendNumberArticle(articles.articlesCount);
-            this.articlesAuthor = articles.articles;
+						this.articlesAuthor = articles.articles;
+						this.articlesCount = articles.articlesCount;
   		});
   		} else {
   			this.articleService.getArticleFavorited(this.userName)
   			.subscribe((articles: Articles) => {
   				this.type = 2;
           this.articleService.sendNumberArticle(articles.articlesCount);
-  				this.articlesAuthor = articles.articles;
+					this.articlesAuthor = articles.articles;
+					this.articlesCount = articles.articlesCount;
   		});
   		}
   	});

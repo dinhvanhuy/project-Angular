@@ -5,6 +5,8 @@ import { Article } from '../models/article';
 import { Observable, Subject } from 'rxjs';
 import { Articles } from '../models/articles';
 import { ArticlesList } from '../models/articlesList';
+import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,19 @@ export class ArticleService {
   private follow: string;
   private subject = new Subject<any>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {
+    authService.isLoggin
+      .subscribe((status) => {
+        if (status) {
+          this.httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type':  'application/json',
+              'Authorization': `Token ${localStorage.getItem('token')}`
+            })
+          }
+        }
+      })
+  }
 
   public addArticle(data: any): Observable<Article> {
     return this.http.post<Article>(this.url, data, this.httpOptions);

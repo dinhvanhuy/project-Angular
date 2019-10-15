@@ -6,7 +6,7 @@
           name="nameComment"></textarea>
       </div>
       <div class="card-footer">
-        <img [src]="image" class="comment-author-img" />
+        <img [src]="(image) ? image : 'https://static.productionready.io/images/smiley-cyrus.jpg'" class="comment-author-img"/>
         <button class="btn btn-sm btn-primary" (click)="addComments()">
           Post Comment
         </button>
@@ -18,7 +18,9 @@
       </div>
       <div class="card-footer">
         <a href="" class="comment-author">
-          <img [src]="comment?.author.image" class="comment-author-img" />
+          <img 
+            [src]="comment.author.image ? comment.author.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'" 
+            class="comment-author-img"/>
         </a>
         &nbsp;
         <a [routerLink]="['/@'+comment?.author.username]" class="comment-author">{{comment?.author.username}}</a>

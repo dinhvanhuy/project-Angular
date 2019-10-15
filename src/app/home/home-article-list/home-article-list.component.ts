@@ -22,7 +22,7 @@ export class HomeArticleListComponent implements OnInit {
   articles;
   tag: string;
   articlesNumberReturn: number;
-  pageArray: number[];
+  pageArray: number[] = [];
   currentPage: number = 1;
 
   //Khởi tạo page array để render ra HTML

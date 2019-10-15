@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service'
 
 import { ArticleService} from '../../services/article.service';
-import { Article } from '../../models/article';
 import { Author } from '../../models/author';
 
 @Component({

@@ -46,7 +46,7 @@
                     signupForm.controls['email'].touched"
             class="error-messages">
             <li>
-              Email can't be blank
+              Email is invalid
             </li>
           </ul>
           <!-- Lỗi password bỏ trống -->
@@ -83,6 +83,7 @@
             </fieldset>
             <button 
               class="btn btn-lg btn-primary pull-xs-right"
+              [disabled]="!signupForm.valid"
               (click)="onSubmit()">
               Sign up
             </button>

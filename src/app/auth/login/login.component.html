@@ -17,7 +17,7 @@
             Email cannot be empty
           </li>
           <li 
-            *ngIf="signinForm.controls['email'].errors && !signinForm.controls['email'].errors['required'] && !signinForm.controls['email'].errors['email'] && signinForm.controls['email'].touched">
+            *ngIf="signinForm.controls['email'].errors && !signinForm.controls['email'].errors['required'] && signinForm.controls['email'].errors['email'] && signinForm.controls['email'].touched">
             Please enter valid email
           </li>
           <li *ngIf="signinForm.controls['password'].errors && signinForm.controls['password'].errors['required'] && signinForm.controls['password'].touched">

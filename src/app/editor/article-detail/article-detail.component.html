@@ -3,7 +3,11 @@
   <div class="container">
     <h1>{{article?.title}}</h1>
     <div class="article-meta">
-      <a [routerLink]="['/@'+article?.author?.username]"><img [src]="article?.author?.image" /></a>
+      <a 
+        [routerLink]="['/@'+article?.author?.username]">
+        <img 
+          [src]="article?.author?.image ? article?.author?.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'"/>
+      </a>
       <div class="info">
         <a [routerLink]="[params]" class="author">{{article?.author?.username}}</a>
         <span class="date">{{article?.createdAt | date:'longDate'}}</span>
@@ -50,7 +54,10 @@
   <hr />
   <div class="article-actions">
     <div class="article-meta">
-      <a [routerLink]="['/@'+article?.author?.username]"><img [src]="article?.author?.image" /></a>
+      <a [routerLink]="['/@'+article?.author?.username]">
+        <img 
+          [src]="article?.author?.image ? article?.author?.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'"/>
+      </a>
       <div class="info">
         <a  [routerLink]="[params]" class="author">{{article?.author?.username}}</a>
         <span class="date">{{article?.createdAt | date:'longDate'}}</span>

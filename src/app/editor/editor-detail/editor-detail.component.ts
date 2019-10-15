@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { ArticleService } from '../../services/article.service';
 import { Article } from '../../models/article';
-import { Comment } from '../../models/comment';
 import { ConfirmService } from 'src/app/services/confirm.service';
 
 function minLength(control: FormControl) {

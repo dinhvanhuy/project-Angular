@@ -42,7 +42,7 @@
     <a 
       [routerLink]="['@' + article.author.username]">
       <img 
-        src="{{ article.author.image }}" />
+        [src]="article.author.image ? article.author.image : 'https://static.productionready.io/images/smiley-cyrus.jpg'" />
     </a>
     <div class="info">
       <a 
@@ -79,7 +79,8 @@
   </ul>
 </div>
 <!-- Phân trang -->
-<nav>
+<nav
+  *ngIf="pageArray.length > 1">
   <ul class="pagination">
     <li
       *ngFor="let page of pageArray"

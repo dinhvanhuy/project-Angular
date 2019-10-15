@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
     this.authService.isLoggin
       .subscribe((status: boolean) => {
         this.isLoggedIn = status;
-        console.log(status)
+        // console.log(status)
       })
   }
 

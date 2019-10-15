@@ -67,7 +67,8 @@
           [routerLink]="['@' + username]"
           [routerLinkActive]="'active'">
           <img 
-            class="user-pic" src="{{ image }}" alt="">
+            class="user-pic" 
+            [src]="image ? image : 'https://static.productionready.io/images/smiley-cyrus.jpg'">
           {{ username }}
         </a>
       </li>
