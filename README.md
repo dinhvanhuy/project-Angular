@@ -34,6 +34,9 @@ Pagination Component để phân trang nếu số lượng bài viết nhiều, 
 ![alt text](https://github.com/xhieu94/Image/blob/master/ProfileModule.png)
 
 III. Tương tác giữa các component
+
+![alt text](https://github.com/xhieu94/Image/blob/master/connection.PNG)
+
 IV. Thành viên:
 - Nguyễn Xuân Hiếu
 - Đinh Văn Huy
