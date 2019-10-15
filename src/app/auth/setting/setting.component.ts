@@ -46,6 +46,7 @@ export class SettingComponent implements OnInit {
         localStorage.setItem('email', user.user.email);
         localStorage.setItem('username', this.userService.user.user.username);
         this.userService.nameChange.emit(user.user.username)
+        this.userService.imageChange.emit(user.user.image)
         if (user.user.bio == '' || user.user.bio == null) {
           localStorage.setItem('bio', '');
         } else {

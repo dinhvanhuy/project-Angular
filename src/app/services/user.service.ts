@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
   nameChange = new EventEmitter<string>()
+  imageChange = new EventEmitter<string>();
   user: User;
   url: string = `https://conduit.productionready.io/api/user`;
   userUrl: string = 'https://conduit.productionready.io/api/profiles';

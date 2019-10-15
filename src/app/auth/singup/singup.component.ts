@@ -26,16 +26,16 @@ export class SingupComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signupForm);
+    // console.log(this.signupForm);
     this.authService.signup(
       this.signupForm.controls['name'].value,
       this.signupForm.controls['email'].value,
       this.signupForm.controls['password'].value)
       .subscribe((data) => {
-        console.log(data);
+        // console.log(data);
         this.authService.login(this.signupForm.controls['email'].value, this.signupForm.controls['password'].value)
           .subscribe((user: User) => {
-            console.log(user);
+            // console.log(user);
             //Gán user đang đăng nhập vào user trong UserService
             this.userService.user = user; 
             //Gán token vào localStorage
@@ -54,7 +54,6 @@ export class SingupComponent implements OnInit {
               localStorage.setItem('image', user.user.image);
             }
             //Thay đổi trạng thái thành đã đăng nhập
-            this.authService.isLoggin.emit(false);
             this.authService.isLoggin.emit(true);
             //Đưa về trang chủ sau khi đã đăng nhập
             this.router.navigate(['/']);
@@ -73,7 +72,7 @@ export class SingupComponent implements OnInit {
             this.errorList.push('username has already been taken');
           }
         }
-        console.log(this.errorList)
+        // console.log(this.errorList)
       })
   }
 
