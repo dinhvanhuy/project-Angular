@@ -4,6 +4,7 @@ import { EditorComponent } from './editor-detail/editor-detail.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { AuthGuard } from '../auth/auth.guard'; 
 import { CanDeactiveEditorArticleGuard } from './editor-detail/can-deactive-editor-article.guard';
+import { CanDeactivateCommentGuardGuard } from './comment-detail/can-deactivate-comment-guard.guard';
 
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
   {
     path: 'article/:slug',
     component: ArticleDetailComponent,
+    canDeactivate: [CanDeactivateCommentGuardGuard]
   }
 ];
 

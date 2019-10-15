@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CommentService } from '../../services/comment.service';
 import { Comments } from '../../models/comments';
 import { Comment } from '../../models/comment';
+import { ConfirmService } from 'src/app/services/confirm.service';
 
 
 
@@ -17,7 +18,9 @@ export class CommentDetailComponent implements OnInit {
   public userName: string;
   @Input() slug: string;
 
-  constructor(private commentService: CommentService) { }
+  constructor(
+    private commentService: CommentService,
+    public confirmService: ConfirmService) { }
 
   ngOnInit() {
     this.getListComent();
@@ -51,5 +54,9 @@ export class CommentDetailComponent implements OnInit {
     this.commentService.removeComment(this.slug, id).subscribe(() => {
       this.getListComent();
     })
+  }
+
+  inputComment() {
+    this.commentService.input.emit(this.nameComment);
   }
 }

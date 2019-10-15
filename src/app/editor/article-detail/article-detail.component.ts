@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service'
 
 import { ArticleService} from '../../services/article.service';
 import { Author } from '../../models/author';
+import { ConfirmService } from 'src/app/services/confirm.service';
 
 @Component({
   selector: 'app-article-detail',
@@ -24,6 +25,7 @@ export class ArticleDetailComponent implements OnInit {
   	private router: ActivatedRoute,
   	private route: Router,
     private userService: UserService,
+    public confirmService: ConfirmService
   	) { }
 
   ngOnInit() {

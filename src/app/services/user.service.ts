@@ -3,6 +3,7 @@ import { User } from '../models/user';
 import { Profile } from '../models/profile';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,19 @@ export class UserService {
     })
   private follow:string;
 
-  constructor(private httpClient: HttpClient) { }
+  //Update lại header mỗi khi có sự đăng nhập/đăng xuất xảy ra
+  constructor(private httpClient: HttpClient, private authService: AuthService) { 
+    this.authService.isLoggin
+      .subscribe((status) => {
+        if (status) {
+          this.httpHeader = new HttpHeaders({
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Accept': `application/json`,
+            'Content-Type': `application/json;charset=UTF-8`,
+          })
+        }
+      })
+  }
 
   updateProFile(pictureUrl: string, username: string, bio: string, email: string, password: string): Observable<User> {
     localStorage.setItem('password', password);

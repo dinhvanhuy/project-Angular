@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Comment } from '../models/comment';
@@ -10,6 +10,7 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class CommentService {
+  input = new EventEmitter<string>()
   public url = 'https://conduit.productionready.io/api/articles';
   public httpOptions = {
       headers: new HttpHeaders({
