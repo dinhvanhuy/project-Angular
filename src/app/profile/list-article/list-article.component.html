@@ -24,6 +24,10 @@
       <ng-template [ngIf]="articlesCount == 0" [ngIfElse]="loading">
         No articles are here... yet.
       </ng-template>
+      <div
+        *ngIf="isLoading">
+        Loading articles ...
+      </div>
       <ng-template #loading>
         <div
           class="article-preview"

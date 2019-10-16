@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   public profile; 
   public follow: string;
   
-  constructor(private articleService: ArticleService,
+  constructor(
     private userService: UserService,
     private router: ActivatedRoute,
     private route: Router,
@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.router.params.subscribe(({userName}) => {
       this.userName = this.removeFirst(userName);
-      if(this.userName === localStorage .getItem('username')) {
+      if(this.userName === localStorage.getItem('username')) {
         this.isView =  true;
       }
       this.userService.getUserDetail(this.userName)
@@ -43,7 +43,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateFollow(following: boolean) {
-    if(localStorage .getItem('username') == null) {
+    if(localStorage .getItem('token') == null || localStorage .getItem('token') == '') {
       return this.route.navigate(['/login'])
     }
     

@@ -2,7 +2,7 @@
   .tag-default:hover {
     cursor: pointer;
     color: white !important;
-    background-color: #5CB85C !important
+    background-color: #5cb85c !important;
   }
 </style>
 <div class="feed-toggle">
@@ -20,78 +20,128 @@
       <a
         [ngClass]="{ active: onGlobal == true }"
         (click)="onClickGlobal()"
-        class="nav-link">
+        class="nav-link"
+      >
         Global Feed
       </a>
     </li>
-    <li 
-      *ngIf="onTag" 
-      class="nav-item">
+    <li *ngIf="onTag" class="nav-item">
       <a [ngClass]="{ active: onTag == true }" class="nav-link"> #{{ tag }} </a>
     </li>
   </ul>
 </div>
 <!-- Hiển thị thông báo chưa có bài viết -->
-<p 
-  *ngIf="articlesNumberReturn == 0">
+<p *ngIf="articlesNumberReturn == 0 && !isLoading">
   No articles are here... yet.
 </p>
+<p *ngIf="isLoading">
+  Loading articles ...
+</p>
 <!-- Articles list -->
-<div *ngFor="let article of articles" class="article-preview">
-  <div class="article-meta">
-    <a 
-      [routerLink]="['@' + article.author.username]">
-      <img 
-        [src]="article?.author['image'] ? article?.author['image'] : 'https://static.productionready.io/images/smiley-cyrus.jpg'" />
-    </a>
-    <div class="info">
-      <a 
-        [routerLink]="['@' + article.author.username]"
-        class="author">{{ article.author.username }}
+<div *ngIf="!isLoading">
+  <div *ngFor="let article of articles" class="article-preview">
+    <div class="article-meta">
+      <a [routerLink]="['@' + article.author.username]">
+        <img
+          [src]="
+            (article?.author)['image']
+              ? (article?.author)['image']
+              : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+          "
+        />
       </a>
-      <span class="date">{{ article.createdAt | customDate }}</span>
+      <div class="info">
+        <a [routerLink]="['@' + article.author.username]" class="author"
+          >{{ article.author.username }}
+        </a>
+        <span class="date">{{ article.createdAt | customDate }}</span>
+      </div>
+      <button
+        #heart
+        class="btn btn-sm pull-xs-right"
+        [ngClass]="{
+          'btn-outline-primary': article.favorited == false,
+          'btn-primary': article.favorited == true
+        }"
+        (click)="toogleLike(heart, article)"
+      >
+        <i class="ion-heart"></i> {{ article.favoritesCount }}
+      </button>
     </div>
-    <button       
-      #heart
-      class="btn btn-sm pull-xs-right"
-      [ngClass]="{'btn-outline-primary': article.favorited == false, 'btn-primary': article.favorited == true}"
-      (click)="toogleLike(heart, article)">
-      <i class="ion-heart"></i> {{ article.favoritesCount }}
-    </button>
+    <a [routerLink]="['article', article.slug]" class="preview-link">
+      <h1>{{ article.title }}</h1>
+      <p>{{ article.body }}</p>
+      <span>Read more...</span>
+    </a>
+    <ul style="float: right" class="tag-list">
+      <li
+        *ngFor="let tag of article.tagList"
+        class="tag-default tag-pill tag-outline ng-binding ng-scope"
+        (click)="onClickTag(tag)"
+      >
+        {{ tag }}
+      </li>
+    </ul>
   </div>
-  <a 
-    [routerLink]="['article', article.slug]"
-    class="preview-link">
-    <h1>{{ article.title }}</h1>
-    <p>{{ article.body }}</p>
-    <span>Read more...</span>
-  </a>
-  <ul
-    style="float: right"
-    class="tag-list">
-    <li
-      *ngFor="let tag of article.tagList"
-      class="tag-default tag-pill tag-outline ng-binding ng-scope"
-      (click)="onClickTag(tag)">
-      {{ tag }}
-    </li>
 
-  </ul>
+  <div *ngFor="let article of articles" class="article-preview">
+    <div class="article-meta">
+      <a [routerLink]="['@' + article.author.username]">
+        <img
+          [src]="
+            (article?.author)['image']
+              ? (article?.author)['image']
+              : 'https://static.productionready.io/images/smiley-cyrus.jpg'
+          "
+        />
+      </a>
+      <div class="info">
+        <a [routerLink]="['@' + article.author.username]" class="author"
+          >{{ article.author.username }}
+        </a>
+        <span class="date">{{ article.createdAt | customDate }}</span>
+      </div>
+      <button
+        #heart
+        class="btn btn-sm pull-xs-right"
+        [ngClass]="{
+          'btn-outline-primary': article.favorited == false,
+          'btn-primary': article.favorited == true
+        }"
+        (click)="toogleLike(heart, article)"
+      >
+        <i class="ion-heart"></i> {{ article.favoritesCount }}
+      </button>
+    </div>
+    <a [routerLink]="['article', article.slug]" class="preview-link">
+      <h1>{{ article.title }}</h1>
+      <p>{{ article.body }}</p>
+      <span>Read more...</span>
+    </a>
+    <ul style="float: right" class="tag-list">
+      <li
+        *ngFor="let tag of article.tagList"
+        class="tag-default tag-pill tag-outline ng-binding ng-scope"
+        (click)="onClickTag(tag)"
+      >
+        {{ tag }}
+      </li>
+    </ul>
+  </div>
 </div>
 <!-- Phân trang -->
-<nav
-  *ngIf="pageArray.length > 1">
-  <ul class="pagination">
-    <li
-      *ngFor="let page of pageArray"
-      class="page-item ng-scope"
-      [ngClass]="{'active': page==currentPage}">
-        <a 
-          class="page-link ng-binding"
-          (click)="onClickPage(page)">
+<div *ngIf="!isLoading">
+  <nav *ngIf="pageArray.length > 1">
+    <ul class="pagination">
+      <li
+        *ngFor="let page of pageArray"
+        class="page-item ng-scope"
+        [ngClass]="{ active: page == currentPage }"
+      >
+        <a class="page-link ng-binding" (click)="onClickPage(page)">
           {{ page }}
-        </a>      
-    </li>
-  </ul>
-</nav>
-
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

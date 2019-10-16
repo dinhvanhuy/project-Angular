@@ -29,9 +29,8 @@ export class HeaderComponent implements OnInit {
     //Gán lại image hiển thị ở header nếu có ảnh mới hoặc xóa ảnh cũ
     this.userService.imageChange
       .subscribe((newImage: string) => {
-        this.image = localStorage.getItem('image')
+        this.image = newImage
       })
-    
     //Tùy vào trạng thái đăng nhập để thay đổi token, qua đó thay đổi DOM hiển thị.
     this.authService.isLoggin
       .subscribe((status) => {

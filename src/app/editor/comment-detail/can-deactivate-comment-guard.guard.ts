@@ -21,6 +21,9 @@ export class CanDeactivateCommentGuardGuard implements CanDeactivate<ArticleDeta
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean> | boolean { 
+    if (localStorage.getItem('token') == null || localStorage.getItem('token') == '') {
+      return true;
+    }
     if (this.input == '') {
       return true;
     }

@@ -59,6 +59,16 @@
               Password can't be blank
             </li>
           </ul>
+          <ul 
+            *ngIf="signupForm.controls['password'].errors &&
+                    signupForm.controls['password'].errors['minlength'] &&
+                    signupForm.controls['password'].touched"
+            class="error-messages">
+            <li>
+                password is too short (minimum is 8 characters)
+            </li>
+          </ul>
+          
           <form [formGroup]="signupForm">
             <fieldset class="form-group">
               <input 
@@ -79,7 +89,8 @@
                 class="form-control form-control-lg" 
                 type="password" 
                 placeholder="Password"
-                formControlName="password">
+                formControlName="password"
+                min="8">
             </fieldset>
             <button 
               class="btn btn-lg btn-primary pull-xs-right"

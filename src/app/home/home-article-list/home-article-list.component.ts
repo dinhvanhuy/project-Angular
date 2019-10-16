@@ -24,6 +24,7 @@ export class HomeArticleListComponent implements OnInit {
   articlesNumberReturn: number;
   pageArray: number[] = [];
   currentPage: number = 1;
+  isLoading: boolean = true;
 
   //Khởi tạo page array để render ra HTML
   generatePageArray(articleAmount: number) {
@@ -75,10 +76,12 @@ export class HomeArticleListComponent implements OnInit {
         this.onTag = true;
         this.onFeed = false;
         this.onGlobal = false;
+        this.isLoading = true;
         // console.log(this.tag);
         //Get các kết quả các list articles trả về tương ứng với tag 
         this.articleService.getArticlesByTag(0, tag)
           .subscribe((articles: ArticlesList) => {
+            this.isLoading = false;
             this.articles = articles.articles;
             this.articlesNumberReturn = articles.articlesCount;
             this.generatePageArray(this.articlesNumberReturn);
@@ -87,11 +90,13 @@ export class HomeArticleListComponent implements OnInit {
   }
 
   onClickGlobal(offset: number = 0) {
+    this.isLoading = true;
     this.onFeed = false;
     this.onGlobal = true;
     this.onTag = false;
     this.articleService.getArticles(offset)
       .subscribe((articles: ArticlesList) => {
+        this.isLoading = false;
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
         this.generatePageArray(this.articlesNumberReturn);
@@ -99,11 +104,13 @@ export class HomeArticleListComponent implements OnInit {
   }
 
   onClickFeed(offset: number = 0) {
+    this.isLoading = true;
     this.onFeed = true;
     this.onGlobal = false;
     this.onTag = false;
     this.articleService.getFeedArticles(offset)
       .subscribe((articles: ArticlesList) => {
+        this.isLoading = false;
         this.articles = articles.articles;
         this.articlesNumberReturn = articles.articlesCount;
         this.generatePageArray(this.articlesNumberReturn);
@@ -113,6 +120,7 @@ export class HomeArticleListComponent implements OnInit {
   }
 
   onClickPage(page: number) {
+    this.isLoading = true;
     this.currentPage = page;
     if (this.onFeed) {
       this.onClickFeed((page - 1) * 10)
@@ -123,6 +131,7 @@ export class HomeArticleListComponent implements OnInit {
     if (this.onTag) {
       this.articleService.getArticlesByTag((page - 1) * 10, this.tag)
         .subscribe((articles: ArticlesList) => {
+          this.isLoading = false;
           this.articles = articles.articles;
           this.articlesNumberReturn = articles.articlesCount;
           this.generatePageArray(this.articlesNumberReturn);
@@ -130,7 +139,7 @@ export class HomeArticleListComponent implements OnInit {
     }
   }
 
-  //Like/Unlike 1 article
+  // Like/Unlike 1 article
   toogleLike(heart: HTMLElement, {slug}) {
     let token = localStorage.getItem('token');
     if (token == '' || token == null) {

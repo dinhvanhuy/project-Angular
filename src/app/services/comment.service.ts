@@ -5,6 +5,7 @@ import { Comment } from '../models/comment';
 import { Comments } from '../models/comments';
 import { Observable } from 'rxjs';
 import { UserService } from './user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,22 @@ export class CommentService {
       })
     }
 
-  constructor(private http: HttpClient, private userService: UserService) {
-   }
+  constructor(private http: HttpClient, private userService: UserService, authService: AuthService) {
+    authService.isLoggin
+      .subscribe((status) => {
+        if (status) {
+          this.httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type':  'application/json',
+              'Authorization': `Token ${localStorage.getItem('token')}`
+            })
+          }
+        } 
+      })
+  }
 
   getComment(slug: string): Observable<Comments> {
-	  return this.http.get<Comments>(`${this.url}/${slug}/comments`, this.httpOptions);
+	  return  localStorage.getItem('token') ? this.http.get<Comments>(`${this.url}/${slug}/comments`, this.httpOptions) : this.http.get<Comments>(`${this.url}/${slug}/comments`, this.httpOptions);
   }
 
   addComment(slug: string, data: object): Observable<Comment>{

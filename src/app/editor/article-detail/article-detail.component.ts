@@ -20,7 +20,7 @@ export class ArticleDetailComponent implements OnInit {
   public favorite: string;
   public username: string;
   public params : string;
-  public isAuth: boolean = true;
+  public isAuth: boolean = false;
   constructor(private articleService: ArticleService, 
   	private router: ActivatedRoute,
   	private route: Router,
@@ -34,8 +34,8 @@ export class ArticleDetailComponent implements OnInit {
   	});
     this.getDetailArticle(this.slug);
 
-    if(localStorage.getItem('username') == null) {
-      this.isAuth = false;
+    if(localStorage.getItem('token') == null) {
+      this.isAuth = true;
     }
 
   }
@@ -75,7 +75,7 @@ export class ArticleDetailComponent implements OnInit {
     }
   }
 
-  updateFavoriteArticle(favorited) {
+  updateFavoriteArticle(favorited: string) {
     this.veryfyAuth();
     this.article.favorited = !favorited;
     favorited ? this.article.favoritesCount-- : this.article.favoritesCount++;
@@ -83,11 +83,11 @@ export class ArticleDetailComponent implements OnInit {
     this.article.favorited ? this.articleService.addFavoritedArticle(this.slug).subscribe() : this.articleService.removeFavoritedArticle(this.slug).subscribe();
   }
 
-  getProfile(userName) {
+  getProfile(userName: string) {
     this.route.navigate([`@${userName}`])
   }
 
-  updateFollow(following) {
+  updateFollow(following: string) {
     this.veryfyAuth();
     this.author.following = !following;
     this.follow = !following ? 'Unfollow' : 'Follow';

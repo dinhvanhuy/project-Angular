@@ -4,6 +4,8 @@ import { CommentService } from '../../services/comment.service';
 import { Comments } from '../../models/comments';
 import { Comment } from '../../models/comment';
 import { ConfirmService } from 'src/app/services/confirm.service';
+import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -16,13 +18,24 @@ export class CommentDetailComponent implements OnInit {
   public listComents: Array<Comment>;
   public image: string;
   public userName: string;
+  public isAuth: boolean =  false;
   @Input() slug: string;
 
   constructor(
     private commentService: CommentService,
-    public confirmService: ConfirmService) { }
+    public confirmService: ConfirmService,
+    private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.isLoggin
+      .subscribe((status: boolean) => {
+        this.isAuth = status
+      })
+    if (localStorage.getItem('token') == null) {
+      this.isAuth = false;
+    } else {
+      this.isAuth = true;
+    }
     this.getListComent();
   }
 
@@ -46,6 +59,7 @@ export class CommentDetailComponent implements OnInit {
     }
     this.commentService.addComment(this.slug, data).subscribe(() => {
       this.nameComment = '';
+      this.commentService.input.emit(this.nameComment);
       this.getListComent();
     })
   }

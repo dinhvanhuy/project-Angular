@@ -88,10 +88,7 @@
       </ng-template>
     </div>
   </div>
-  <ng-template [ngIf]="isAuth" [ngIfElse]="author">
-    <app-comment-detail [slug]="slug"></app-comment-detail>
-  </ng-template>
-  <ng-template #author>
+  <ng-template [ngIf]="isAuth">
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2">
         <p>
@@ -103,5 +100,7 @@
       </div>
     </div>
   </ng-template>
+  <app-comment-detail [slug]="slug"></app-comment-detail>
+  
 
 </div>

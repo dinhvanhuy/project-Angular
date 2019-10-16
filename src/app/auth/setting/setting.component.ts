@@ -57,7 +57,7 @@ export class SettingComponent implements OnInit {
         } else {
           localStorage.setItem('image', user.user.image);
         }
-        this.router.navigate(['/']);
+        this.router.navigate([`@${localStorage.getItem('username')}`]);
       }, (error: ErrorSignup) => {
         this.errorList = [];
         //Lưu lại danh sách các error trả về

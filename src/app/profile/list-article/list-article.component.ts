@@ -16,7 +16,8 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 	public subscription: Subscription;
 	public params: string;
 	public articlesCount: number;
-  public limit: number = 10;
+	public limit: number = 10;
+	isLoading: boolean;
 
 	@Input() currentPage:number;
     constructor(private articleService: ArticleService,
@@ -27,11 +28,13 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
   	this.route.url.subscribe((params) => {
+			this.isLoading = true;
       this.params = params[0].path;
       this.userName = this.removeFirst(params[0].path); 
   		if(params.length === 1) {
   			this.articleService.getArticleAuthor(this.userName)
 			  	.subscribe((articles: Articles) => {
+						this.isLoading = false;
 			  		this.type = 1;
             if(articles.articlesCount > this.limit) {
               this.articleService.sendNumberArticle(articles.articlesCount);
@@ -42,6 +45,7 @@ export class ListArticleComponent implements OnInit, OnDestroy {
   		} else {
   			this.articleService.getArticleFavorited(this.userName)
   			.subscribe((articles: Articles) => {
+					this.isLoading = false;
   				this.type = 2;
           if(articles.articlesCount > this.limit) {
             this.articleService.sendNumberArticle(articles.articlesCount);
