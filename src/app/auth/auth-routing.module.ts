@@ -9,26 +9,26 @@ import { CanDeactivateGuard } from './setting/can-deactivate.guard';
 
 
 const routes: Routes = [
-  {
-    path: 'login',
-    canActivate: [NoNeedAuthGuard],
-    component: LoginComponent
-  },
-  {
-    path: 'register',
-    canActivate: [NoNeedAuthGuard],
-    component: SingupComponent
-  },
-  {
-    path: 'settings',
-    canActivate: [AuthGuard],
-    canDeactivate: [CanDeactivateGuard],
-    component: SettingComponent
-  }
+	{
+		path: 'login',
+		canActivate: [NoNeedAuthGuard],
+		component: LoginComponent
+	},
+	{
+		path: 'register',
+		canActivate: [NoNeedAuthGuard],
+		component: SingupComponent
+	},
+	{
+		path: 'settings',
+		canActivate: [AuthGuard],
+		canDeactivate: [CanDeactivateGuard],
+		component: SettingComponent
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
 })
 export class AuthRoutingModule { }
