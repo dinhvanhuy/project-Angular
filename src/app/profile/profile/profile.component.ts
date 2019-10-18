@@ -3,7 +3,8 @@ import { ArticleService } from '../../services/article.service';
 import { UserService } from '../../services/user.service';
 import { Profile } from '../../models/profile';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { ConfirmService } from 'src/app/services/confirm.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-profile',
@@ -22,6 +23,8 @@ export class ProfileComponent implements OnInit {
 		private userService: UserService,
 		private router: ActivatedRoute,
 		private route: Router,
+		private confirmService: ConfirmService,
+		private location: Location
 	) { }
 
 	ngOnInit() {
@@ -34,6 +37,10 @@ export class ProfileComponent implements OnInit {
 				.subscribe((profile: Profile) => {
 					this.profile = profile.profile;
 					this.follow = this.profile.following ? 'Unfollow' : 'Follow';
+				}, (error) => {
+					console.log('This user does not exist');
+					this.location.back();
+					return this.confirmService.alert('This user does not exist');
 				});
 		});
 	}

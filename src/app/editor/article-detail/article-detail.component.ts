@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ArticleService } from '../../services/article.service';
 import { Author } from '../../models/author';
 import { ConfirmService } from 'src/app/services/confirm.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-article-detail',
@@ -27,7 +28,8 @@ export class ArticleDetailComponent implements OnInit {
 		private router: ActivatedRoute,
 		private route: Router,
 		private userService: UserService,
-		public confirmService: ConfirmService
+		public confirmService: ConfirmService,
+		private location: Location
 	) { }
 
 	ngOnInit() {
@@ -63,6 +65,9 @@ export class ArticleDetailComponent implements OnInit {
 			if (this.author.username !== localStorage.getItem('username') || localStorage.getItem('username') == null) {
 				this.isView = true;
 			}
+		}, () => {
+			this.confirmService.alert('Oops, article not found');
+			this.location.back();
 		});
 	}
 

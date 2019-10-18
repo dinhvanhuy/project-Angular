@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { ArticleService } from 'src/app/services/article.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-singup',
@@ -17,7 +18,11 @@ export class SingupComponent implements OnInit {
 	errorList: string[] = [];
 
 	constructor(
-		private authService: AuthService, private router: Router, private userService: UserService, private articlesService: ArticleService) { }
+		private authService: AuthService,
+		private router: Router,
+		private userService: UserService,
+		private articlesService: ArticleService,
+		private location: Location) { }
 
 	ngOnInit() {
 		this.signupForm = new FormGroup({
@@ -61,19 +66,17 @@ export class SingupComponent implements OnInit {
 						this.articlesService.slug.subscribe((slug: string) => {
 							this.router.navigate(['article', slug]);
 						});
-						this.router.navigate(['/']);
+						this.location.back();
 						// console.log(user.user.email);
 					});
 			}, (errorSignup: ErrorSignup) => {
 				this.errorList = [];
 				for (const prop in errorSignup.error.errors) {
-					if (prop == 'email') {
+					if (prop === 'email') {
 						this.errorList.push('email has already been taken');
-					}
-					if (prop == 'password') {
+					} else if (prop === 'password') {
 						this.errorList.push('password is too short (minimum is 8 characters)');
-					}
-					if (prop == 'username') {
+					} else {
 						this.errorList.push('username has already been taken');
 					}
 				}

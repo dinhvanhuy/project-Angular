@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { Tags } from '../models/tags';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class TagService {
-  //Sự kiện khi có tag được click để subcribe ở Articles List Component
-  onClickedTag = new EventEmitter<string>()
+	// Sự kiện khi có tag được click để subcribe ở Articles List Component
+	onClickedTag = new EventEmitter<string>();
 
-  constructor(private httpClient: HttpClient) { }
-  
-  getTags(): Observable<Tags> {
-    return this.httpClient.get<Tags>(`https://conduit.productionready.io/api/tags`);
-  }
+	constructor(private httpClient: HttpClient) { }
+
+	getTags(): Observable<Tags> {
+		return this.httpClient.get<Tags>(`https://conduit.productionready.io/api/tags`);
+	}
 }

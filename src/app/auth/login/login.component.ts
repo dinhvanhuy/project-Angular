@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { AuthService } from '../auth.service';
 import { User } from 'src/app/models/user';
@@ -20,18 +21,15 @@ export class LoginComponent implements OnInit {
 	 private authService: AuthService,
 	 private router: Router,
 	 private userService: UserService,
-	 private articlesService: ArticleService
-		) { }
+	 private articlesService: ArticleService,
+	 private location: Location
+	 ) { }
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
 			email: new FormControl('', [Validators.required, Validators.email]),
 			password: new FormControl('', [Validators.required])
-    });
-    this.articlesService.slug.subscribe((slug: string) => {
-      console.log(slug);
-      this.router.navigate(['article', slug]);
-    });
+		});
 	}
 
 	onSubmit() {
@@ -59,9 +57,9 @@ export class LoginComponent implements OnInit {
 
 				// Thay đổi trạng thái thành đã đăng nhập
 				this.authService.isLoggin.emit(true);
-        this.invalidError = '';
+				this.invalidError = '';
 				// Đưa về trang chủ sau khi đã đăng nhập
-				this.router.navigate(['/']);
+				this.location.back();
 			}, () => {
 				this.invalidError = 'email or password is invalid';
 			});

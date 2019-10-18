@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { Subscription, from } from 'rxjs';
 import { Articles } from '../../models/articles';
+import { ConfirmService } from 'src/app/services/confirm.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-list-article',
@@ -23,7 +25,9 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 	constructor(
 		private articleService: ArticleService,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private confirmService: ConfirmService,
+		private location: Location
 	) { }
 
 	ngOnInit() {
@@ -89,6 +93,9 @@ export class ListArticleComponent implements OnInit, OnDestroy {
 			this.articleService.getArticleFavorited(this.userName, offset.toString())
 				.subscribe((articles: Articles) => {
 					this.articlesAuthor = articles.articles;
+				}, () => {
+					this.confirmService.alert('Oops, user not found ...');
+					this.location.back();
 				});
 		}
 	}

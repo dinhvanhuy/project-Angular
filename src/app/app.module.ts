@@ -11,23 +11,27 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
+import { EditorModule } from './editor/editor.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    FormsModule,
-    AuthModule,
-    HomeModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		HeaderComponent,
+		FooterComponent
+	],
+	imports: [
+		BrowserModule,
+		HttpClientModule,
+		FormsModule,
+		AuthModule,
+		EditorModule,
+		ProfileModule,
+		AppRoutingModule,
+		HomeModule,
+		ReactiveFormsModule,
+	],
+	providers: [],
+	bootstrap: [AppComponent],
 })
 export class AppModule { }

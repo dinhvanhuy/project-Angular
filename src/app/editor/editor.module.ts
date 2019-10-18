@@ -12,13 +12,13 @@ import { CommentDetailComponent } from './comment-detail/comment-detail.componen
 
 
 @NgModule({
-  declarations: [EditorComponent, ArticleDetailComponent, CommentDetailComponent],
-  imports: [
-    CommonModule,
-    MarkdownModule.forRoot(),
-    ReactiveFormsModule,
-    FormsModule,
-    EditorRoutingModule,
-  ]
+	declarations: [EditorComponent, ArticleDetailComponent, CommentDetailComponent],
+	imports: [
+		CommonModule,
+		MarkdownModule.forRoot(),
+		ReactiveFormsModule,
+		FormsModule,
+		EditorRoutingModule,
+	]
 })
 export class EditorModule { }

@@ -2,15 +2,20 @@ import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ConfirmService {
 
-  constructor() { }
+	constructor() { }
 
-  confirm(message?: string): Observable<boolean> {
-    const confirmation = window.confirm(message || 'Is it OK?');
+	confirm(message?: string): Observable<boolean> {
+		const confirmation = window.confirm(message || 'Is it OK?');
 
-    return of(confirmation);
-  };
+		return of(confirmation);
+	}
+
+	alert(message?: string) {
+		const alert = window.alert(message);
+		return alert;
+	}
 }
